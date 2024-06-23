@@ -1,6 +1,3 @@
-
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,6 +7,7 @@ class AppColors {
   static const Color secondaryColor = Color(0xFFF2216E);
   static const Color accentColor = Color(0xFF371B34);
   static const Color backgroundColor = Color(0xFFFFFFFF);
+  static const Color customWhite = Color(0xFFFBFCFE);
   // Add more colors as needed
 }
 
@@ -21,12 +19,16 @@ ThemeData appTheme = ThemeData(
       fontSize: 40.0,
       fontWeight: FontWeight.w700,
     ),
+    titleMedium: GoogleFonts.alegreya(
+      fontSize: 32.0,
+      fontWeight: FontWeight.w700,
+    ),
     bodyMedium: GoogleFonts.alegreya(
       fontSize: 24.0,
       fontWeight: FontWeight.w400,
     ),
     bodySmall: GoogleFonts.openSans(
-      fontSize: 12.0,
+      fontSize: 16.0,
       fontWeight: FontWeight.w400,
     ),
   ),
@@ -46,7 +48,7 @@ ThemeData appTheme = ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.symmetric(horizontal: 52, vertical: 21),
+          const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
@@ -60,7 +62,7 @@ ThemeData appTheme = ThemeData(
           const Color(0xFFF5F5F5)
         ),
         textStyle: MaterialStateProperty.all<TextStyle>(
-          GoogleFonts.openSans(
+          GoogleFonts.alegreya(
             fontSize: 20.0,
             fontWeight: FontWeight.w400,
           ),
@@ -69,11 +71,19 @@ ThemeData appTheme = ThemeData(
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderSide: const BorderSide(color: Color.fromRGBO(133, 133, 133, 0.3), width: 0.87),
+        borderSide: const BorderSide(color: Color(0xFF8292AA), width: 0.87),
         borderRadius: BorderRadius.circular(8.74),
-      ),  
-      fillColor: const Color.fromRGBO(217, 217, 217, 0.3),
+      ),      
+      contentPadding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
+      fillColor: const Color(0xFFC8CED9),
       filled: true,
+      hintStyle: GoogleFonts.openSans(
+                textStyle: const TextStyle(
+                  fontSize: 15.73,
+                  fontWeight: FontWeight.w400,
+                  color:  Color(0xFF858585),
+                ),
+              ),
     )
 
 );

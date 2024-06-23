@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_health/pages/onBoardingSignup.dart';
 import 'package:mobi_health/pages/onboarding.dart';
+import 'package:mobi_health/pages/otp_page.dart';
 import 'package:mobi_health/pages/register.dart';
 
 import 'theme.dart';
@@ -21,6 +22,7 @@ class MainApp extends StatelessWidget {
         '/': (context) => const SafeArea(child: OnBoardingPage()),
         '/register': (context) => const SafeArea(child: RegisterPage()),
         '/onboarding': (context) => const SafeArea(child: OnBoardingSignup()),
+        '/otp': (context) => const SafeArea(child: OtpPage()),
       },
     );
   }

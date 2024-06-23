@@ -71,9 +71,7 @@ class OnBoardingSignup extends StatelessWidget {
                 ),
                 Text(
                   'Already have an account ? sign in',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 16,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(
                   height: 22,
