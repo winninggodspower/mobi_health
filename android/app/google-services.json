@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "146640858854",
+    "project_id": "mobi-health-5ef9d",
+    "storage_bucket": "mobi-health-5ef9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146640858854:android:67dc7b116a0399e1ff9527",
+        "android_client_info": {
+          "package_name": "com.example.mobi_health"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgHpv66nLssBAgZErqLui433JHpN8EYEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -73,7 +73,11 @@ ThemeData appTheme = ThemeData(
       border: OutlineInputBorder(
         borderSide: const BorderSide(color: Color(0xFF8292AA), width: 0.87),
         borderRadius: BorderRadius.circular(8.74),
-      ),      
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color(0xFF8292AA), width: 0.87),
+        borderRadius: BorderRadius.circular(8.74),
+      ),
       contentPadding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
       fillColor: const Color(0xFFC8CED9),
       filled: true,

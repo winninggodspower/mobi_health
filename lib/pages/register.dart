@@ -1,9 +1,11 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:mobi_health/pages/otp_page.dart';
 import 'package:mobi_health/theme.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,7 +16,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   var _obscurePassword;
   var _obscureConfirmPassword;
 
@@ -24,7 +25,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _hospitalController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
 
   DateTime? _dob;
@@ -81,10 +83,12 @@ class _RegisterPageState extends State<RegisterPage> {
               key: _formKey,
               child: Container(
                 padding: const EdgeInsets.all(23),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.customWhite,
-                  borderRadius:
-                      BorderRadius.circular(31), // Set the border radius here
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(31.0),
+                    topRight: Radius.circular(31.0),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,36 +133,36 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      'Date of Birth',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 19.22,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF384252),
-                          )),
+                    Text('Date of Birth',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontSize: 19.22,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF384252),
+                            )),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _dateOfBirthController,
                       decoration: InputDecoration(
-                        hintText: 'Date of Birth', // Placeholder text
-                        prefixIcon: IconButton(
-                          onPressed: () async{
-                            final DateTime? selectedDate = await showDatePicker(
-                              context: context, 
-                              firstDate: DateTime(1980), 
-                              lastDate: DateTime(2024)
-                              );
-                            if (selectedDate != null) {
-                              final DateFormat formatter = DateFormat('dd/MM/yyyy');
-                              final String formattedDate = formatter.format(selectedDate);
-                              setState(() {
-                                _dateOfBirthController.text = formattedDate;
-                              });
-                            }
-                          }, 
-                          icon: const Icon(Icons.calendar_month),
-                        )
-                      ),
+                          hintText: 'Date of Birth', // Placeholder text
+                          prefixIcon: IconButton(
+                            onPressed: () async {
+                              final DateTime? selectedDate =
+                                  await showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1980),
+                                      lastDate: DateTime(2024));
+                              if (selectedDate != null) {
+                                final DateFormat formatter =
+                                    DateFormat('dd/MM/yyyy');
+                                final String formattedDate =
+                                    formatter.format(selectedDate);
+                                setState(() {
+                                  _dateOfBirthController.text = formattedDate;
+                                });
+                              }
+                            },
+                            icon: const Icon(Icons.calendar_month),
+                          )),
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
                           return 'Please enter your date of birth';
@@ -219,12 +223,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 left: 24, top: 8, right: 24),
                             decoration: const BoxDecoration(
                                 border: Border(
-                                right: BorderSide(
-                                  color: Color(0xFF8292AA),
-                                  width: 0.87,
-                                ),
-                              )
-                            ),
+                              right: BorderSide(
+                                color: Color(0xFF8292AA),
+                                width: 0.87,
+                              ),
+                            )),
                             child: InkWell(
                               onTap: () {
                                 showCountryPicker(
@@ -259,17 +262,17 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
-                        hintText:
-                            'Set a password', // Placeholder text
-                        suffixIcon: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          }, 
-                          icon: _obscurePassword? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                        )
-                      ),
+                          hintText: 'Set a password', // Placeholder text
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                            icon: _obscurePassword
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                          )),
                       validator: (value) {
                         return null;
                       },
@@ -286,23 +289,25 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _confirmPasswordController,
                       obscureText: _obscureConfirmPassword,
                       decoration: InputDecoration(
-                        hintText: 'Re-enter password', // Placeholder text
-                        suffixIcon: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
-                            });
-                          }, 
-                          icon: _obscureConfirmPassword? const Icon(Icons.visibility) : const Icon(Icons.visibility_off),
-                        )
-                      ),
+                          hintText: 'Re-enter password', // Placeholder text
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
+                            icon: _obscureConfirmPassword
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                          )),
                       validator: (value) {
                         return null;
                       },
                     ),
                     const SizedBox(height: 41),
                     ElevatedButton(
-                       style: ElevatedButton.styleFrom(
+                      style: ElevatedButton.styleFrom(
                         textStyle: GoogleFonts.alegreyaSans(
                           fontSize: 19,
                           fontWeight: FontWeight.w400,
@@ -310,11 +315,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 52, vertical: 12),
                       ),
-                      onPressed: () {
-                        // if (_formKey.currentState!.validate()) {
-                        // }
-                        Navigator.pushNamed(context, '/otp');
-                      },
+                      onPressed: _handleFormSubmit,
                       child: const Text('Next'),
                     ),
                   ],
@@ -325,17 +326,31 @@ class _RegisterPageState extends State<RegisterPage> {
         ));
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _dob) {
-      setState(() {
-        _dob = picked;
-      });
+  Future<void> _handleFormSubmit() async {
+    if (_phoneController.text.isEmpty || _phoneController.text.length < 10) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("invalid phone number"),
+        ));
+      return;
     }
+
+    print(selectedCountry.phoneCode + _phoneController.text.toString());
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber:
+          "+${selectedCountry.phoneCode}${_phoneController.text}",
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("error: ${e.message}"),
+        ));
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpPage(verificationId: verificationId)));
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
   }
 }
