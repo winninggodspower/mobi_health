@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mobi_health/pages/otp_page.dart';
 import 'package:mobi_health/theme.dart';
+import 'package:mobi_health/util.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -343,9 +344,7 @@ class _RegisterPageState extends State<RegisterPage> {
         await firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("error: ${e.message}"),
-        ));
+        ShowSnackBar(context, "error: ${e.message}");
       },
       codeSent: (String verificationId, int? resendToken) {
         Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpPage(verificationId: verificationId)));
