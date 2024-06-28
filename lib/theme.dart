@@ -6,11 +6,13 @@ class AppColors {
   static const Color primary_800Color = Color(0xFF1B1E61);
   static const Color primary_200Color = Color(0xFFDEE0F6);
   static const Color primary_600Color = Color(0xFF4D54CE);
+  static const Color primary_500Color = Color(0xFF7C81DB);
   static const Color secondaryColor = Color(0xFFF2216E);
   static const Color accentColor = Color(0xFF371B34);
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color customWhite = Color(0xFFFBFCFE);
   static const Color gray = Color(0xFF384252);
+  static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3);
   // Add more colors as needed
 }
 
@@ -59,7 +61,7 @@ ThemeData appTheme = ThemeData(
           ),
         ),
         backgroundColor: MaterialStateProperty.all<Color>(
-          AppColors.primaryColor,
+          AppColors.primary_500Color,
         ),
         foregroundColor: MaterialStateProperty.all<Color>(
           const Color(0xFFF5F5F5)

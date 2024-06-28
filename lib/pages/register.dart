@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:mobi_health/pages/otp_page.dart';
+import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
+import 'package:mobi_health/pages/authentication_pages/otp_page.dart';
+import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
 
@@ -319,6 +321,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: _handleFormSubmit,
                       child: const Text('Next'),
                     ),
+                    const authQuestion(
+                      question_text: 'Already have an account yet ?', 
+                      action_text: 'login',
+                      redirect_route: '/login', 
+                    )
                   ],
                 ),
               ),
@@ -328,6 +335,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _handleFormSubmit() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpSuccessPage()));
+    return;
+
     if (_phoneController.text.isEmpty || _phoneController.text.length < 10) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("invalid phone number"),

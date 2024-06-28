@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/dashboard/home_page.dart';
+import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
 import 'package:pinput/pinput.dart';

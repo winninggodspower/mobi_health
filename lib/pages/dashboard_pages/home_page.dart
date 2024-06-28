@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/dashboard/components/bottom_navigation.dart';
-import 'package:mobi_health/pages/dashboard/components/health_card.dart';
+import 'package:mobi_health/pages/dashboard_pages/components/bottom_navigation.dart';
+import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
 
