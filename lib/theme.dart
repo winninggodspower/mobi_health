@@ -5,14 +5,18 @@ class AppColors {
   static const Color primaryColor = Color(0xFFAEAFF7);
   static const Color primary_800Color = Color(0xFF1B1E61);
   static const Color primary_200Color = Color(0xFFDEE0F6);
+  static const Color primary50Color = Color(0xffFBFCFE);
+  static const Color primary100Color = Color(0xFFF0F1FB);
   static const Color primary_600Color = Color(0xFF4D54CE);
   static const Color primary_500Color = Color(0xFF7C81DB);
   static const Color secondaryColor = Color(0xFFF2216E);
+  static const Color secondary_500Color = Color(0xFFF882AD);
   static const Color accentColor = Color(0xFF371B34);
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color customWhite = Color(0xFFFBFCFE);
   static const Color gray = Color(0xFF384252);
-  static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3);
+  static const Color gray2 = Color(0xFF6E7485);
+  static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3); 
   // Add more colors as needed
 }
 

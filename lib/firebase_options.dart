@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'mobi-health-5ef9d.firebaseapp.com',
     storageBucket: 'mobi-health-5ef9d.appspot.com',
   );
+
 }

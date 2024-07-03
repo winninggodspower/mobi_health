@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
 import 'package:mobi_health/pages/authentication_pages/otp_page.dart';
+import 'package:mobi_health/pages/components/app_label.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
@@ -25,12 +26,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _hospitalController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _hospitalController = TextEditingController();
+  final TextEditingController _durationOfPregnancyController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  DateTime? _selectedDateOfBirth;
 
   DateTime? _dob;
 
@@ -53,6 +56,17 @@ class _RegisterPageState extends State<RegisterPage> {
     _obscurePassword = false;
     _obscureConfirmPassword = false;
   }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _hospitalController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('First Name',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent:'First Name' ),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _firstNameController,
@@ -116,12 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Last Name',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Last Name'),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _lastNameController,
@@ -136,12 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Date of Birth',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Date of Birth'),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _dateOfBirthController,
@@ -153,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   await showDatePicker(
                                       context: context,
                                       firstDate: DateTime(1980),
-                                      lastDate: DateTime(2024));
+                                      lastDate: DateTime(2023));
                               if (selectedDate != null) {
                                 final DateFormat formatter =
                                     DateFormat('dd/MM/yyyy');
@@ -161,6 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     formatter.format(selectedDate);
                                 setState(() {
                                   _dateOfBirthController.text = formattedDate;
+                                  _selectedDateOfBirth = selectedDate;
                                 });
                               }
                             },
@@ -174,14 +174,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Duration of pregnancy(Optional)',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Duration ofpregnancy(Optional)'),
                     const SizedBox(height: 14),
                     TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: _durationOfPregnancyController,
                       decoration: const InputDecoration(
                         hintText:
                             'Estimated date you go pregnant', // Placeholder text
@@ -191,30 +188,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Hospital(Optional)',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: "Hospital(Optional)"),
                     const SizedBox(height: 14),
                     TextFormField(
+                      controller: _hospitalController,
                       decoration: const InputDecoration(
                         hintText:
                             'Select hospital where you do antinatals', // Placeholder text
                       ),
-                      controller: _hospitalController,
                       validator: (value) {
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Phone number',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Phone number'),
                     const SizedBox(height: 14),
                     TextFormField(
                       keyboardType: TextInputType.number,
@@ -254,12 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Password',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Password'),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _passwordController,
@@ -273,20 +255,15 @@ class _RegisterPageState extends State<RegisterPage> {
                               });
                             },
                             icon: _obscurePassword
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off),
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility),
                           )),
                       validator: (value) {
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
-                    Text('Confirm Password',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 19.22,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF384252),
-                            )),
+                    const AppLabel(textContent: 'Confirm Password'),
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _confirmPasswordController,
@@ -301,8 +278,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               });
                             },
                             icon: _obscureConfirmPassword
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off),
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility),
                           )),
                       validator: (value) {
                         return null;
@@ -335,9 +312,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _handleFormSubmit() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpSuccessPage()));
-    return;
 
+    // validate if phone number is not empty
     if (_phoneController.text.isEmpty || _phoneController.text.length < 10) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("invalid phone number"),
@@ -345,11 +321,19 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    print(selectedCountry.phoneCode + _phoneController.text.toString());
+    //validate if password matches
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("password doesn't match"),
+        ));
+      return;
+    }
+
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    var phoneNumber = "+${selectedCountry.phoneCode}${_phoneController.text}";
+    print(phoneNumber);
     await firebaseAuth.verifyPhoneNumber(
-      phoneNumber:
-          "+${selectedCountry.phoneCode}${_phoneController.text}",
+      phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await firebaseAuth.signInWithCredential(credential);
       },
@@ -357,9 +341,25 @@ class _RegisterPageState extends State<RegisterPage> {
         ShowSnackBar(context, "error: ${e.message}");
       },
       codeSent: (String verificationId, int? resendToken) {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> OtpPage(verificationId: verificationId)));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpVerificatonPage(
+              verificationId: verificationId,
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              dateOfBirth: _selectedDateOfBirth!,
+              durationOfPregnancy: int.parse(_durationOfPregnancyController.text),
+              hospital: _hospitalController.text,
+              phoneNumber: _phoneController.text,
+              password: _passwordController.text,
+            ),
+          ),
+        );
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
+
+  
 }

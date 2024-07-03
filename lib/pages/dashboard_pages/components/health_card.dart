@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobi_health/theme.dart';
+import 'package:mobi_health/svg_assets.dart' as svg_assets;
 
 class HealthCard extends StatelessWidget {
   final String leadingIcon;
   final String title;
   final String subtitle;
   final String mainValue;
-  final String trailingIcon;
-  final String additionalInfo;
+  // final String additionalInfo;
+  final Widget statusWidget;
 
   const HealthCard({
     Key? key,
@@ -16,8 +17,7 @@ class HealthCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.mainValue,
-    required this.trailingIcon,
-    required this.additionalInfo,
+    required this.statusWidget,
   }) : super(key: key);
 
   @override
@@ -72,28 +72,14 @@ class HealthCard extends StatelessWidget {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SvgPicture.asset(
-                trailingIcon,
+                svg_assets.lightBulbIcon,
                 semanticsLabel: 'Trailing Icon',
               ),
               const SizedBox(height: 3,),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.primary_200Color,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                child: Text(
-                  additionalInfo,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 14,
-                    color: AppColors.primary_800Color,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              statusWidget
             ],
           ),
         ],

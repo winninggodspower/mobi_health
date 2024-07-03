@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mobi_health/svg_assets.dart' as svg_assets;
 
 class AppButtomNavigation extends StatefulWidget {
-  const AppButtomNavigation({super.key});
+  final PageController pageController;
+
+  const AppButtomNavigation({super.key, required this.pageController});
 
   @override
   State<AppButtomNavigation> createState() => _AppButtomNavigationState();
@@ -14,28 +18,51 @@ class _AppButtomNavigationState extends State<AppButtomNavigation> {
     setState(() {
       _selectedIndex = index;
     });
+    widget.pageController.jumpToPage(index);
+  }
+
+  ColorFilter getCurrentIndexColorFilter(index){
+    return  ColorFilter.mode(_selectedIndex == index ? const Color(0xFF371B34) : const Color(0xFFCDD0E3), BlendMode.srcIn);
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: SvgPicture.asset(
+              svg_assets.homeIcon,
+              colorFilter: getCurrentIndexColorFilter(0),
+              ),
+            label: 'home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon:SvgPicture.asset(
+              svg_assets.customerSupportIcon,
+              colorFilter: getCurrentIndexColorFilter(1),
+              ),
+            label: 'custom support',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon:SvgPicture.asset(
+              svg_assets.bookIcon,
+              colorFilter: getCurrentIndexColorFilter(2),
+              ),
+            label: 'read',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              svg_assets.deviceIcon,
+              colorFilter: getCurrentIndexColorFilter(3),
+              ),
+            label: 'device',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
       );
   }
 }

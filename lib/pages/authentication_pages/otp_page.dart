@@ -1,23 +1,42 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
+import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
 import 'package:pinput/pinput.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // class OnBoarding extends StatelessWidget
 
-class OtpPage extends StatefulWidget {
+class OtpVerificatonPage extends StatefulWidget {
   final String verificationId;
+  final String firstName;
+  final String lastName;
+  final DateTime dateOfBirth;
+  final int durationOfPregnancy;
+  final String hospital;
+  final String phoneNumber;
+  final String password;
 
-  const OtpPage({super.key, required this.verificationId});
+  OtpVerificatonPage({
+    required this.verificationId,
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.durationOfPregnancy,
+    required this.hospital,
+    required this.phoneNumber,
+    required this.password,
+  });
 
   @override
-  State<OtpPage> createState() => _OtpPageState();
+  State<OtpVerificatonPage> createState() => _OtpVerificatonPageState();
 }
 
-class _OtpPageState extends State<OtpPage> {
+class _OtpVerificatonPageState extends State<OtpVerificatonPage> {
   late final TextEditingController pinController;
 
   String? otpCode;
@@ -66,7 +85,13 @@ class _OtpPageState extends State<OtpPage> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.black)),
               ),
-              onSubmitted: (value) {
+              onCompleted: (pin){
+                print('on complete was called');
+                setState(() {
+                  otpCode = pin;
+                });
+              },
+              onChanged: (value) {
                 setState(() {
                   otpCode = value;
                 });
@@ -86,8 +111,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
               onPressed: () {
                 if (otpCode != null) {
-                  // verifyOtpCode(context, otpCode!);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomePage()));
+                  verifyOtpCode(context, otpCode!);
                 } else {
                   ShowSnackBar(context, "Enter 6-digit code");
                 }
@@ -102,15 +126,32 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   Future<void> verifyOtpCode(BuildContext context, String optCode) async {
-    print('verification running');
+    final _auth = FirebaseAuth.instance; 
+    final _firestore = FirebaseFirestore.instance;
+
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: widget.verificationId,
+      smsCode: optCode
+    );
+
     try {
-      PhoneAuthCredential creds = PhoneAuthProvider.credential(
-          verificationId: widget.verificationId, smsCode: optCode);
+      UserCredential userCredential =await _auth.signInWithCredential(credential);
+      // Create user in your Firestore database
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'firstName': widget.firstName,
+        'lastName': widget.lastName,
+        'dateOfBirth': widget.dateOfBirth,
+        'durationOfPregnancy': widget.durationOfPregnancy,
+        'hospital': widget.hospital,
+        'phoneNumber': widget.phoneNumber,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-      UserCredential userCred =await FirebaseAuth.instance.signInWithCredential(creds);
+      // Set the user's password
+      await userCredential.user?.updatePassword(widget.password);
 
-      if (userCred.user != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomePage()));
+      if (userCredential.user != null) {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> const OtpSuccessPage()));
       }
     } on FirebaseAuthException catch (e) {
       ShowSnackBar(context, e.message.toString());
