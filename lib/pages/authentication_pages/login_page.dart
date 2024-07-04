@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/pages/components/app_label.dart';
@@ -5,6 +7,7 @@ import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/theme.dart';
+import 'package:mobi_health/util.dart';
 
 // class OnBoarding extends StatelessWidget
 
@@ -17,8 +20,17 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 14),
                 TextFormField(
                   controller: _phoneController,
+                  keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     hintText: 'Enter phone number',
                     fillColor:AppColors.grayLight
@@ -81,9 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 52, vertical: 21),
                   ),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const DashboardIndex()));
-                  },
+                  onPressed: handleSubmit,
                   child: const Text('Next'),
                 ),
                 const SizedBox(height: 14),
@@ -98,5 +109,28 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )
     );
+  }
+
+  void handleSubmit() async {
+    final _auth = FirebaseAuth.instance; 
+    final _firestore = FirebaseFirestore.instance;
+
+    if (_formKey.currentState?.validate() ?? true) {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: '${_phoneController.text}@example.com', // Use email format based on phone number
+        password: _passwordController.text,
+      );
+
+      // Check if user credential is not null and navigate to dashboard
+      if (userCredential.user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardIndex()),
+        );
+      } else {
+        ShowSnackBar(context, 'Failed to sign in');
+      }
+    }
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> const DashboardIndex()));
   }
 }

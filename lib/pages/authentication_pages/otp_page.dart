@@ -115,7 +115,6 @@ class _OtpVerificatonPageState extends State<OtpVerificatonPage> {
                 } else {
                   ShowSnackBar(context, "Enter 6-digit code");
                 }
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomePage()));
               },
               child: const Text('Next'),
             ),
@@ -136,19 +135,25 @@ class _OtpVerificatonPageState extends State<OtpVerificatonPage> {
 
     try {
       UserCredential userCredential =await _auth.signInWithCredential(credential);
+
+      // Construct email using phone number (for linking accounts)
+      String email = '${widget.phoneNumber.trim()}@example.com'.toLowerCase();
+      print('email: ' + email);
+
+      // Link with email/password credential
+      await userCredential.user?.linkWithCredential(EmailAuthProvider.credential(email: email, password: widget.password));
+
       // Create user in your Firestore database
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
-        'firstName': widget.firstName,
-        'lastName': widget.lastName,
+        'firstName': widget.firstName.trim(),
+        'lastName': widget.lastName.trim(),
         'dateOfBirth': widget.dateOfBirth,
         'durationOfPregnancy': widget.durationOfPregnancy,
         'hospital': widget.hospital,
         'phoneNumber': widget.phoneNumber,
+        'email': email,
         'createdAt': FieldValue.serverTimestamp(),
       });
-
-      // Set the user's password
-      await userCredential.user?.updatePassword(widget.password);
 
       if (userCredential.user != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context)=> const OtpSuccessPage()));

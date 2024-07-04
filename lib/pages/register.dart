@@ -184,7 +184,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             'Estimated date you go pregnant', // Placeholder text
                       ),
                       validator: (value) {
-                        return null;
+                       if (value == null || value.isEmpty) {
+                        return 'This field cannot be empty';
+                      }
                       },
                     ),
                     const SizedBox(height: 20),
@@ -237,7 +239,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       controller: _phoneController,
                       validator: (value) {
-                        return null;
+                        final phoneRegex = RegExp(r'^\d{10}$');
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        } else if (!phoneRegex.hasMatch(value)) {
+                          return 'Please enter a valid 10-digit phone number';
+                        }
+                        return null; 
                       },
                     ),
                     const SizedBox(height: 20),
@@ -259,6 +267,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 : const Icon(Icons.visibility),
                           )),
                       validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field cannot be empty';
+                        }
+                        if (value.length < 6) {
+                          return 'Password lenght must be more than 6 characters';
+                        }
                         return null;
                       },
                     ),
@@ -282,6 +296,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 : const Icon(Icons.visibility),
                           )),
                       validator: (value) {
+                        if (value != _passwordController.text) {
+                          return "password doesn\'t match";
+                        }
                         return null;
                       },
                     ),
@@ -312,19 +329,19 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _handleFormSubmit() async {
+    if (_formKey.currentState != null) {
+      if (!_formKey.currentState!.validate()) {
+        print('Invalid form');
+        return;
+        // Handle invalid form case, such as showing error messages
+      }
+    }
+
 
     // validate if phone number is not empty
     if (_phoneController.text.isEmpty || _phoneController.text.length < 10) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("invalid phone number"),
-        ));
-      return;
-    }
-
-    //validate if password matches
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("password doesn't match"),
         ));
       return;
     }
@@ -351,7 +368,7 @@ class _RegisterPageState extends State<RegisterPage> {
               dateOfBirth: _selectedDateOfBirth!,
               durationOfPregnancy: int.parse(_durationOfPregnancyController.text),
               hospital: _hospitalController.text,
-              phoneNumber: _phoneController.text,
+              phoneNumber: phoneNumber,
               password: _passwordController.text,
             ),
           ),
@@ -360,6 +377,4 @@ class _RegisterPageState extends State<RegisterPage> {
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
-
-  
 }
