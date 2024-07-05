@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/dashboard_pages/components/bottom_navigation.dart';
-import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
-import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
+import 'package:health/health.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'package:mobi_health/health_connect_settings.dart' as health_settings;
+
+enum AppState {
+  AUTHORIZED,
+  AUTH_NOT_GRANTED,
+}
 
 class ConnectDevicePage extends StatefulWidget {
   const ConnectDevicePage({super.key});
@@ -14,6 +19,39 @@ class ConnectDevicePage extends StatefulWidget {
 }
 
 class _ConnectDevicePageState extends State<ConnectDevicePage> {
+  AppState _state = AppState.AUTH_NOT_GRANTED;
+
+  void initState() {
+    Health().configure(useHealthConnectIfAvailable: true);
+    super.initState();
+  }
+
+  /// Install Google Health Connect on this phone.
+  Future<void> installHealthConnect() async {
+    await Health().installHealthConnect();
+  }
+
+  Future<void> authorize() async {
+    await Permission.activityRecognition.request();
+    await Permission.location.request();
+
+    bool? hasPermissions =
+        await Health().hasPermissions(health_settings.types, permissions: health_settings.permissions);
+    debugPrint('haspermission: $hasPermissions');
+    bool authorized = false;
+    if (hasPermissions != true) {
+      try {
+        authorized = await Health()
+            .requestAuthorization(health_settings.types, permissions: health_settings.permissions);
+      } catch (error) {
+        debugPrint("Exception in authorize: $error");
+      }
+    }
+    print('is it authorized: $authorized');
+    setState(() => _state =
+        (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,10 +103,10 @@ class _ConnectDevicePageState extends State<ConnectDevicePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 52, vertical: 8),
                 ),
-                onPressed: () {
-                  
-                },
-                child: const Text('Connect to Google Health'),
+                onPressed: authorize,
+                child: _state == AppState.AUTHORIZED ? 
+                const Text('connected to health connect') :
+                const Text('Connect to Google Health'),
               ),
             ),
           ],

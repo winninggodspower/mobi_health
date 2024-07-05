@@ -116,21 +116,25 @@ class _LoginPageState extends State<LoginPage> {
     final _firestore = FirebaseFirestore.instance;
 
     if (_formKey.currentState?.validate() ?? true) {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: '${_phoneController.text}@example.com', // Use email format based on phone number
-        password: _passwordController.text,
-      );
 
-      // Check if user credential is not null and navigate to dashboard
-      if (userCredential.user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardIndex()),
+      try {
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: '${_phoneController.text}@example.com', // Use email format based on phone number
+          password: _passwordController.text,
         );
-      } else {
-        ShowSnackBar(context, 'Failed to sign in');
+        
+        // Check if user credential is not null and navigate to dashboard
+        if (userCredential.user != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DashboardIndex()),
+          );
+        } else {
+          ShowSnackBar(context, 'Failed to sign in');
+        }
+      } on Exception catch (e) {
+         ShowSnackBar(context, 'Failed to sign in');
       }
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> const DashboardIndex()));
   }
 }

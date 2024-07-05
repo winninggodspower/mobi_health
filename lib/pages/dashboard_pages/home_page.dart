@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
+import 'package:health/health.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
+import 'package:mobi_health/health_connect_settings.dart' as health_settings;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,7 +17,53 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+enum AppState {
+  HORIZED,
+  AUTH_NOT_GRANTED,
+  DATA_NOT_FETCHED,
+  FETCHING_DATA,
+  DATA_READY,
+  NO_DATA,
+}
+
 class _HomePageState extends State<HomePage> {
+  List<HealthDataPoint> _healthDataList = [];
+
+  AppState _state = AppState.DATA_NOT_FETCHED;
+
+  void initState() {
+    Health().configure(useHealthConnectIfAvailable: true);
+    super.initState();
+  }
+
+  Future<void> fetchData() async {
+    setState(() => _state = AppState.FETCHING_DATA);
+
+    final now = DateTime.now();
+    final yesterday = now.subtract(const Duration(hours: 24));
+    _healthDataList.clear();
+
+    try {
+      List<HealthDataPoint> healthData = await Health().getHealthDataFromTypes(
+        types: health_settings.types,
+        startTime: yesterday,
+        endTime: now,
+      );
+
+      _healthDataList.addAll(
+          (healthData.length < 100) ? healthData : healthData.sublist(0, 100));
+    } catch (error) {
+      debugPrint("Exception in getHealthDataFromTypes: $error");
+    }
+    _healthDataList = Health().removeDuplicates(_healthDataList);
+    for (var data in _healthDataList) {
+      debugPrint(jsonEncode(data));
+    }
+    setState(() {
+      _state = _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
