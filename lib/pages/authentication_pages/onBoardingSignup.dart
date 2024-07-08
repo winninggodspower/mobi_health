@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/theme.dart';
 
 // class OnBoarding extends StatelessWidget
@@ -69,9 +70,11 @@ class OnBoardingSignup extends StatelessWidget {
                 const SizedBox(
                   height: 13,
                 ),
-                Text(
-                  'Already have an account ? sign in',
-                  style: Theme.of(context).textTheme.bodySmall,
+                const authQuestion(
+                  question_text: 'Already have an account ?', 
+                  action_text: 'sign in',
+                  redirect_route: '/login',
+                  center_align: true,
                 ),
                 const SizedBox(
                   height: 22,

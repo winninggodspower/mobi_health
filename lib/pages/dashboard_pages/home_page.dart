@@ -6,9 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:health/health.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
+import 'package:provider/provider.dart';
+import 'dart:developer' as developer;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -66,6 +69,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthenticationProvider>();
+    final user = authProvider.user;
+    final userInfo = authProvider.userInfo;
+
     return SafeArea(
           child: Padding(
         padding: const EdgeInsets.fromLTRB(18, 39, 18, 34),
@@ -76,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               height: 10,
             ),
             Text(
-              'Welcome back, Vong!',
+              'Welcome back, ${user?.displayName}!',
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   fontSize: 30,
@@ -87,7 +94,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             Text(
-              'Pregnancy week : 13',
+              'Pregnancy week : ${userInfo?['durationOfPregnancy']}',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!

@@ -142,6 +142,7 @@ class _OtpVerificatonPageState extends State<OtpVerificatonPage> {
 
       // Link with email/password credential
       await userCredential.user?.linkWithCredential(EmailAuthProvider.credential(email: email, password: widget.password));
+      await userCredential.user?.updateDisplayName(widget.firstName.trim());
 
       // Create user in your Firestore database
       await _firestore.collection('users').doc(userCredential.user?.uid).set({

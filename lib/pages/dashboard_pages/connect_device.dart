@@ -5,8 +5,10 @@ import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
+import 'dart:developer' as developer;
 
 enum AppState {
+  NOT_INSTALLED,
   AUTHORIZED,
   AUTH_NOT_GRANTED,
 }
@@ -37,17 +39,17 @@ class _ConnectDevicePageState extends State<ConnectDevicePage> {
 
     bool? hasPermissions =
         await Health().hasPermissions(health_settings.types, permissions: health_settings.permissions);
-    debugPrint('haspermission: $hasPermissions');
+    developer.log('has permission: $hasPermissions');
     bool authorized = false;
     if (hasPermissions != true) {
       try {
         authorized = await Health()
             .requestAuthorization(health_settings.types, permissions: health_settings.permissions);
       } catch (error) {
-        debugPrint("Exception in authorize: $error");
+        developer.log("Exception in authorize: $error");
       }
     }
-    print('is it authorized: $authorized');
+    developer.log('is it authorized: $authorized');
     setState(() => _state =
         (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
   }

@@ -6,8 +6,10 @@ import 'package:mobi_health/pages/components/app_label.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
+import 'package:provider/provider.dart';
 
 // class OnBoarding extends StatelessWidget
 
@@ -94,7 +96,15 @@ class _LoginPageState extends State<LoginPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 52, vertical: 21),
                   ),
-                  onPressed: handleSubmit,
+                  onPressed: (){
+                    if (_formKey.currentState?.validate() ?? false) {
+                      context.read<AuthenticationProvider>().signInWithPhoneAndPassword(
+                        _phoneController.text.trim(),
+                        _passwordController.text.trim(),
+                        context,
+                      );
+                    }
+                  },
                   child: const Text('Next'),
                 ),
                 const SizedBox(height: 14),
@@ -109,32 +119,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       )
     );
-  }
-
-  void handleSubmit() async {
-    final _auth = FirebaseAuth.instance; 
-    final _firestore = FirebaseFirestore.instance;
-
-    if (_formKey.currentState?.validate() ?? true) {
-
-      try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: '${_phoneController.text}@example.com', // Use email format based on phone number
-          password: _passwordController.text,
-        );
-        
-        // Check if user credential is not null and navigate to dashboard
-        if (userCredential.user != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DashboardIndex()),
-          );
-        } else {
-          ShowSnackBar(context, 'Failed to sign in');
-        }
-      } on Exception catch (e) {
-         ShowSnackBar(context, 'Failed to sign in');
-      }
-    }
   }
 }

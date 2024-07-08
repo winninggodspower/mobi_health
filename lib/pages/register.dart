@@ -244,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return 'Please enter your phone number';
                         } else if (!phoneRegex.hasMatch(value)) {
                           return 'Please enter a valid 10-digit phone number';
-                        }
+                        }               
                         return null; 
                       },
                     ),
@@ -335,15 +335,6 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
         // Handle invalid form case, such as showing error messages
       }
-    }
-
-
-    // validate if phone number is not empty
-    if (_phoneController.text.isEmpty || _phoneController.text.length < 10) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("invalid phone number"),
-        ));
-      return;
     }
 
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
