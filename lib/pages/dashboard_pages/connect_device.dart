@@ -40,7 +40,8 @@ class _ConnectDevicePageState extends State<ConnectDevicePage> {
     bool? hasPermissions =
         await Health().hasPermissions(health_settings.types, permissions: health_settings.permissions);
     developer.log('has permission: $hasPermissions');
-    bool authorized = false;
+
+    bool authorized = hasPermissions ?? false;
     if (hasPermissions != true) {
       try {
         authorized = await Health()

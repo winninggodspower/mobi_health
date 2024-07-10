@@ -36,6 +36,9 @@ class _HomePageState extends State<HomePage> {
 
   void initState() {
     Health().configure(useHealthConnectIfAvailable: true);
+    developer.log('init ran');
+    fetchData();
+
     super.initState();
   }
 
@@ -52,16 +55,19 @@ class _HomePageState extends State<HomePage> {
         startTime: yesterday,
         endTime: now,
       );
-
+      developer.log('health data: ${healthData}');
       _healthDataList.addAll(
           (healthData.length < 100) ? healthData : healthData.sublist(0, 100));
     } catch (error) {
       debugPrint("Exception in getHealthDataFromTypes: $error");
     }
+
     _healthDataList = Health().removeDuplicates(_healthDataList);
+
     for (var data in _healthDataList) {
       debugPrint(jsonEncode(data));
     }
+
     setState(() {
       _state = _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
     });
@@ -73,12 +79,13 @@ class _HomePageState extends State<HomePage> {
     final user = authProvider.user;
     final userInfo = authProvider.userInfo;
 
+
     return SafeArea(
           child: Padding(
         padding: const EdgeInsets.fromLTRB(18, 39, 18, 34),
         child: ListView(
           children: [
-            const DahsboardProfileNotificationWidget(),
+            DashboardProfileNotificationWidget(),
             const SizedBox(
               height: 10,
             ),

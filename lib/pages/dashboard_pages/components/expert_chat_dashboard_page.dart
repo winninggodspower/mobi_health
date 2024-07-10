@@ -23,7 +23,7 @@ class _ExpertChatDashboardPageState extends State<ExpertChatDashboardPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const DahsboardProfileNotificationWidget(),
+                  DashboardProfileNotificationWidget(imageColor: AppColors.orangeLight, notificationColor: AppColors.orange,),
                   const SizedBox(
                     height: 10,
                   ),
@@ -114,12 +114,9 @@ class ExpertChatNotification extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Badge(
+              Badge(
                   backgroundColor: Color(0xff23BD33),
-                  child: Icon(
-                    Icons.notifications_outlined,
-                    size: 35,
-                  ),
+                  child: Image.asset('assets/mobi-health-logo.png'),
               ),
               const SizedBox(width: 14.13,),
               Column(

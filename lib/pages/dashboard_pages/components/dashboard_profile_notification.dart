@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
 
-class DahsboardProfileNotificationWidget extends StatelessWidget {
-  const DahsboardProfileNotificationWidget({
+class DashboardProfileNotificationWidget extends StatelessWidget {
+  Color imageColor;
+  Color notificationColor;
+
+
+  DashboardProfileNotificationWidget({
     super.key,
+    this.imageColor = const Color(0xff3A6AB3),
+    this.notificationColor = AppColors.secondaryColor,
   });
 
   @override
@@ -12,17 +18,17 @@ class DahsboardProfileNotificationWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          padding: EdgeInsets.all(3),
+          padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
-                color: const Color(0xff3A6AB3),
+                color: imageColor,
               ),
-          child: Image.asset('assets/avatar.png') //profile image of logged in image,
+          child: Image.asset('assets/profile-pic.png', width: 35,) //profile image of logged in image,
         ),
-        const Badge(
-          label: Text('2'),
-          backgroundColor: AppColors.secondaryColor,
-          child: Icon(
+        Badge(
+          label: const Text('2'),
+          backgroundColor: notificationColor,
+          child: const Icon(
             Icons.notifications_outlined,
             size: 35,
           ),

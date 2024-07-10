@@ -11,13 +11,17 @@ class AppColors {
   static const Color primary_500Color = Color(0xFF7C81DB);
   static const Color secondaryColor = Color(0xFFF2216E);
   static const Color secondary_500Color = Color(0xFFF882AD);
+  static const Color secondary_700Color = Color(0xFFF2216E);
   static const Color accentColor = Color(0xFF371B34);
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color customWhite = Color(0xFFFBFCFE);
   static const Color gray = Color(0xFF384252);
   static const Color gray2 = Color(0xFF6E7485);
-  static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3); 
+  static const Color gray3 = Color(0xFFF4F2F1);
+  static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3);
   // Add more colors as needed
+  static const Color orange =  Color(0xffFE8235);
+  static const Color orangeLight = Color.fromRGBO(240, 158, 84, 0.47);
 }
 
 
@@ -31,6 +35,10 @@ ThemeData appTheme = ThemeData(
     titleMedium: GoogleFonts.alegreya(
       fontSize: 32.0,
       fontWeight: FontWeight.w700,
+    ),
+    titleSmall: GoogleFonts.alegreya(
+      fontSize: 20,
+      fontWeight: FontWeight.w500
     ),
     bodyMedium: GoogleFonts.alegreya(
       fontSize: 24.0,

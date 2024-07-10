@@ -4,25 +4,28 @@ import 'package:mobi_health/svg_assets.dart' as svg_assets;
 
 class AppButtomNavigation extends StatefulWidget {
   final PageController pageController;
+  final int selectedIndex;
 
-  const AppButtomNavigation({super.key, required this.pageController});
+  const AppButtomNavigation({
+    Key? key,
+    required this.pageController,
+    required this.selectedIndex,
+  });
 
   @override
   State<AppButtomNavigation> createState() => _AppButtomNavigationState();
 }
 
 class _AppButtomNavigationState extends State<AppButtomNavigation> {
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      widget.pageController.jumpToPage(index);
     });
-    widget.pageController.jumpToPage(index);
   }
 
   ColorFilter getCurrentIndexColorFilter(index){
-    return  ColorFilter.mode(_selectedIndex == index ? const Color(0xFF371B34) : const Color(0xFFCDD0E3), BlendMode.srcIn);
+    return  ColorFilter.mode(widget.selectedIndex == index ? const Color(0xFF371B34) : const Color(0xFFCDD0E3), BlendMode.srcIn);
   }
 
   @override
@@ -58,7 +61,7 @@ class _AppButtomNavigationState extends State<AppButtomNavigation> {
             label: 'device',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: widget.selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
         showSelectedLabels: false,

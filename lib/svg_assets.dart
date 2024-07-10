@@ -13,3 +13,5 @@ const String customerSupportIcon = 'assets/svgs/customer-support.svg';
 const String deviceIcon = 'assets/svgs/device.svg';
 const String bookIcon = 'assets/svgs/icon-park-outline_read-book.svg';
 
+const String profilePic = 'assets/profile-pic.png';
+
