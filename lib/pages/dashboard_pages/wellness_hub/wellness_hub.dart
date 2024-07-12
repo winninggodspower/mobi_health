@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/theme.dart';
@@ -20,7 +21,8 @@ class _WellnessHubState extends State<WellnessHub> {
   List<dynamic> categories = [];
   List<Map<String, dynamic>> articles = [];
   String selectedCategory = '';
-
+  int userPregnancyDuration = 0; 
+  
   @override
   void initState() {
     super.initState();
@@ -29,19 +31,46 @@ class _WellnessHubState extends State<WellnessHub> {
 
 
   Future<void> fetchArticles() async {
-    final querySnapshot = await FirebaseFirestore.instance.collection('articles').get();
+    final querySnapshot = await FirebaseFirestore.instance
+      .collection('articles')
+      .get();
+
     final fetchedArticles = querySnapshot.docs.map((doc) => doc.data()).toList();
 
     setState(() {
       articles = fetchedArticles;
       categories = articles.map((article) => article['category'] as String).toSet().toList();
+      categories.insert(0, 'For Me');
       selectedCategory = categories.first;
     });
   }
 
-
   List<Map<String, dynamic>> getFilteredArticles() {
-    return articles.where((article) => article['category'] == selectedCategory).toList();
+    if (selectedCategory == 'For Me') {
+      return articles.where((article) {
+        int? targetDuration = article['targetPregnancyDuration'] as int?;
+        bool upward = article['upwards'] as bool;
+
+        // If targetDuration is null, you can choose how to handle it:
+        // Option 1: Skip articles with null target duration
+        if (targetDuration == null) return false;
+
+        if (upward) {
+          return userPregnancyDuration >= targetDuration;
+        } else {
+          return userPregnancyDuration <= targetDuration;
+        }
+      }).toList();
+    } else {
+      return articles.where((article) => article['category'] == selectedCategory).toList();
+    }
+  }
+
+
+
+  String formatDate(Timestamp timestamp) {
+    var date = timestamp.toDate();
+    return DateFormat('d MMMM y').format(date);
   }
 
   @override
@@ -105,9 +134,11 @@ class _WellnessHubState extends State<WellnessHub> {
               padding: const EdgeInsets.only(bottom: 7),
               child: ArticleCard(
                 title: article['title']!,
-                bodyText: article['subTitle']!,
+                subTitle: article['subTitle']!,
+                bodyText: article['bodyText']!,
                 imagePath: "assets/blog-preview-image.png",
                 tag: article['tag']!,
+                date: formatDate(article['createdAt'] as Timestamp),
               ),
             )).toList(),
           ]

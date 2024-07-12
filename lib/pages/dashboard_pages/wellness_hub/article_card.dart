@@ -5,16 +5,20 @@ import 'package:mobi_health/theme.dart'; // Ensure you have this import if neede
 
 class ArticleCard extends StatelessWidget {
   final String title;
+  final String subTitle;
   final String bodyText;
   final String imagePath;
   final String tag;
+  final String date;
 
   const ArticleCard({
     Key? key,
     required this.title,
+    required this.subTitle,
     required this.bodyText,
     required this.imagePath,
     required this.tag,
+    required this.date
   }) : super(key: key);
 
   @override
@@ -58,7 +62,7 @@ class ArticleCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  bodyText,
+                  subTitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w300,
                     color: const Color(0xff371B34),
@@ -69,7 +73,10 @@ class ArticleCard extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>  const BlogPost()));
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (_)=>  BlogPost(title: title, bodyText: bodyText, date: date))
+                        );
                       },
                       child: Text(
                         'Read',
