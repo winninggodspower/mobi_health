@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health/health.dart';
+import 'package:mobi_health/pages/authentication_pages/login_page.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
@@ -110,6 +111,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 3,
             ),
+            ElevatedButton(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=> const LoginPage())), child: Text('login')),
             Text(
               '3rd Trimester',
               style: GoogleFonts.alegreya(

@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WellnessHub extends StatefulWidget {
   const WellnessHub({super.key});
@@ -14,55 +17,30 @@ class WellnessHub extends StatefulWidget {
 }
 
 class _WellnessHubState extends State<WellnessHub> {
-  late List<String> categories;
-  late List<Map<String, String>> articles;
-  late String selectedCategory;
+  List<dynamic> categories = [];
+  List<Map<String, dynamic>> articles = [];
+  String selectedCategory = '';
 
   @override
   void initState() {
-    articles = [
-      {
-        'title': 'Stages of pregnancy',
-        'bodyText': 'Let’s open up to the things that matter among the people',
-        'imagePath': 'assets/blog-preview-image.png',
-        'tag': 'New',
-        'category': 'For me',
-      },
-      {
-        'title': 'Healthy Eating Habits',
-        'bodyText': 'Discover the best practices for maintaining a healthy diet.',
-        'imagePath': 'assets/blog-preview-image.png',
-        'tag': 'Trending',
-        'category': 'Self Care',
-      },
-      {
-        'title': 'Exercise Tips for Beginners',
-        'bodyText': 'Simple and effective exercise tips for those just starting out.',
-        'imagePath': 'assets/blog-preview-image.png',
-        'tag': 'Popular',
-        'category': 'Pregnancy',
-      },
-      {
-        'title': 'Mental Health Awareness',
-        'bodyText': 'Understanding the importance of mental health in our daily lives.',
-        'imagePath': 'assets/blog-preview-image.png',
-        'tag': 'Important',
-        'category': 'Mental Health',
-      },
-      {
-        'title': 'Work-Life Balance',
-        'bodyText': 'How to achieve a healthy work-life balance.',
-        'imagePath': 'assets/blog-preview-image.png',
-        'tag': 'Featured',
-        'category': 'Self Care',
-      },
-    ];
-    categories  = articles.map((article) => article['category']! ).toSet().toList();
-    selectedCategory = categories.first;
     super.initState();
+    fetchArticles();
   }
 
-  List<Map<String, String>> getFilteredArticles() {
+
+  Future<void> fetchArticles() async {
+    final querySnapshot = await FirebaseFirestore.instance.collection('articles').get();
+    final fetchedArticles = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+    setState(() {
+      articles = fetchedArticles;
+      categories = articles.map((article) => article['category'] as String).toSet().toList();
+      selectedCategory = categories.first;
+    });
+  }
+
+
+  List<Map<String, dynamic>> getFilteredArticles() {
     return articles.where((article) => article['category'] == selectedCategory).toList();
   }
 
@@ -127,8 +105,8 @@ class _WellnessHubState extends State<WellnessHub> {
               padding: const EdgeInsets.only(bottom: 7),
               child: ArticleCard(
                 title: article['title']!,
-                bodyText: article['bodyText']!,
-                imagePath: article['imagePath']!,
+                bodyText: article['subTitle']!,
+                imagePath: "assets/blog-preview-image.png",
                 tag: article['tag']!,
               ),
             )).toList(),

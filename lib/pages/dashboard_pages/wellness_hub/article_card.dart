@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/blog_post.dart';
 import 'package:mobi_health/theme.dart'; // Ensure you have this import if needed
 
 class ArticleCard extends StatelessWidget {
@@ -66,12 +67,17 @@ class ArticleCard extends StatelessWidget {
                 const SizedBox(height: 15),
                 Row(
                   children: [
-                    Text(
-                      'Read',
-                      style: GoogleFonts.alegreya(
-                        fontSize: 20,
-                        color: AppColors.secondary_700Color,
-                        fontWeight: FontWeight.w700,
+                    TextButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>  const BlogPost()));
+                      },
+                      child: Text(
+                        'Read',
+                        style: GoogleFonts.alegreya(
+                          fontSize: 20,
+                          color: AppColors.secondary_700Color,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),

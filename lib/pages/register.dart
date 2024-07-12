@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -208,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: '+237,',
+                        hintText: '+237xxxxxxxxx',
                         // ignore: avoid_unnecessary_containers, unnecessary_const
                         prefixIcon: Container(
                             padding: const EdgeInsets.only(
@@ -239,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       controller: _phoneController,
                       validator: (value) {
-                        final phoneRegex = RegExp(r'^\d{10}$');
+                        final phoneRegex = RegExp(r'^\d{1,14}$');
                         if (value == null || value.isEmpty) {
                           return 'Please enter your phone number';
                         } else if (!phoneRegex.hasMatch(value)) {
@@ -339,7 +341,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     var phoneNumber = "+${selectedCountry.phoneCode}${_phoneController.text}";
-    print(phoneNumber);
+
+    // ensure phone number doesn't start with ++
+    phoneNumber = phoneNumber.startsWith('++') ? phoneNumber.substring(1) : phoneNumber;
+    log(phoneNumber);
+
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
