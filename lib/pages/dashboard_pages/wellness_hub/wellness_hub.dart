@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/dashboard_pages/components/article_card.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/theme.dart';
 
