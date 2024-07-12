@@ -111,7 +111,6 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 3,
             ),
-            ElevatedButton(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=> const LoginPage())), child: Text('login')),
             Text(
               '3rd Trimester',
               style: GoogleFonts.alegreya(
