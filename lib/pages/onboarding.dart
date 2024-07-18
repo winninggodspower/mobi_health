@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/theme.dart';
 
-// class OnBoarding extends StatelessWidget
-
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: Stack(
@@ -43,13 +43,18 @@ class OnBoardingPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondaryColor,
-                      textStyle: GoogleFonts.alegreyaSans(
-                        fontSize: 25.0,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.15,
+                        vertical: 20,
+                      ),
+                    ),
+                    child: Text(
+                      'Let Us Help You',
+                      style: GoogleFonts.alegreyaSans(
+                        fontSize: screenWidth * 0.055,
                         fontWeight: FontWeight.w500,
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 20),
                     ),
-                    child: const Text('Let Us Help You'),
                   )
                 ],
               ),

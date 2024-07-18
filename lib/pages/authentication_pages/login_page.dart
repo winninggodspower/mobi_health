@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/pages/components/app_label.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
-import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
-import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/util.dart';
