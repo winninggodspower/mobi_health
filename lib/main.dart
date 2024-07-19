@@ -8,6 +8,7 @@ import 'package:mobi_health/pages/onboarding.dart';
 import 'package:mobi_health/pages/register.dart';
 
 import 'package:mobi_health/providers/authentication_provider.dart';
+import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -32,7 +33,8 @@ class MainApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=> AuthenticationProvider())
+        ChangeNotifierProvider(create: (context)=> AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context)=> DevicePermissionProvider())
       ],
       child: MaterialApp(
         theme: appTheme,

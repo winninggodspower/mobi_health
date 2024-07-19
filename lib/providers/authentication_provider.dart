@@ -25,6 +25,15 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get isLoggedIn => _user != null;
 
   Future<void> signInWithPhoneAndPassword(String phone, String password, BuildContext context) async {
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dialog from being dismissed by tapping outside
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: '$phone@example.com',
@@ -38,12 +47,20 @@ class AuthenticationProvider extends ChangeNotifier {
         _user = userCredential.user;
         await _fetchUserInformation(_user!.uid);
         notifyListeners();
+
+        // Dismiss the dialog and show an error message
+        Navigator.pop(context);
         Navigator.pushReplacementNamed(context, '/dashboard');
       } else {
+        // Dismiss the dialog and show an error message
+        Navigator.pop(context);
         _showSnackBar(context, 'Failed to sign in');
       }
     } catch (e) {
         print(e);
+
+        // Dismiss the dialog and show an error message
+        Navigator.pop(context);
       _showSnackBar(context, 'Failed to sign in');
     }
   }

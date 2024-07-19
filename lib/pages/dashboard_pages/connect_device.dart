@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
 import 'dart:developer' as developer;
+
+import 'package:provider/provider.dart';
 
 enum AppState {
   NOT_INSTALLED,
@@ -51,6 +54,10 @@ class _ConnectDevicePageState extends State<ConnectDevicePage> {
       }
     }
     developer.log('is it authorized: $authorized');
+    
+    // Update the global permission state
+    Provider.of<DevicePermissionProvider>(context, listen: false).setAuthorization(authorized);
+
     setState(() => _state =
         (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
   }

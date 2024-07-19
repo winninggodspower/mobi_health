@@ -45,7 +45,7 @@ class OnBoardingSignup extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           height: 1,
-                          color: Color(0xFFFBFCFE),
+                          color: const Color(0xFFFBFCFE),
                         ),
                     ),
                   ],
