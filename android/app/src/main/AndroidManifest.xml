@@ -60,15 +60,14 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-    </queries>
-
-    <!-- Check whether Health Connect is installed or not -->
-    <queries>
+        
+        <!-- Check whether Health Connect is installed or not -->
         <package android:name="com.google.android.apps.healthdata" />
         <intent>
             <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
         </intent>
     </queries>
+
 
     <uses-permission android:name="android.permission.INTERNET" />
 

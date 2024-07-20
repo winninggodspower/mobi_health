@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health/health.dart';
-import 'package:mobi_health/pages/authentication_pages/login_page.dart';
+import 'package:mobi_health/pages/authentication/hospital_pages/register.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
@@ -145,7 +145,10 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   const SizedBox(height: 30,),
                   ElevatedButton(
-                    onPressed: (){widget.pageController.jumpToPage(3);},
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
+                      // widget.pageController.jumpToPage(3);
+                      },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryColor,
                       textStyle: GoogleFonts.alegreyaSans(

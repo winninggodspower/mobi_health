@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/authentication_pages/login_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
 import 'package:mobi_health/theme.dart';
 
 class OtpSuccessPage extends StatefulWidget {

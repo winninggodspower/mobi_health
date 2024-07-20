@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart'
 ;
 import 'package:flutter/material.dart';
-import 'package:mobi_health/pages/authentication_pages/login_page.dart';
-import 'package:mobi_health/pages/authentication_pages/onBoardingSignup.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/pages/onboarding.dart';
-import 'package:mobi_health/pages/register.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';

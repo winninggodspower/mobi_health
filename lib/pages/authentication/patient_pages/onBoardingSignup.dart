@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
+import 'package:mobi_health/pages/authentication/hospital_pages/register.dart';
 import 'package:mobi_health/theme.dart';
 
 // class OnBoarding extends StatelessWidget
@@ -89,7 +90,7 @@ class OnBoardingSignup extends StatelessWidget {
                       width: 271,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryColor,

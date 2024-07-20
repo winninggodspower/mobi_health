@@ -37,8 +37,12 @@ class _ConnectDevicePageState extends State<ConnectDevicePage> {
   }
 
   Future<void> authorize() async {
-    await Permission.activityRecognition.request();
-    await Permission.location.request();
+    final permissions = [
+      Permission.activityRecognition,
+      Permission.location,
+    ];
+
+    await permissions.request();
 
     bool? hasPermissions =
         await Health().hasPermissions(health_settings.types, permissions: health_settings.permissions);

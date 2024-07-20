@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/auth_success_page.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/theme.dart';
@@ -144,16 +144,21 @@ class _OtpVerificatonPageState extends State<OtpVerificatonPage> {
       await userCredential.user?.linkWithCredential(EmailAuthProvider.credential(email: email, password: widget.password));
       await userCredential.user?.updateDisplayName(widget.firstName.trim());
 
-      // Create user in your Firestore database
+       // Create user in your Firestore database
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'phoneNumber': widget.phoneNumber,
+        'email': email,
+        'userType': 'patient',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // Create hospital liked to user in firestore database
+      await _firestore.collection('patient').doc(userCredential.user?.uid).set({
         'firstName': widget.firstName.trim(),
         'lastName': widget.lastName.trim(),
         'dateOfBirth': widget.dateOfBirth,
         'durationOfPregnancy': widget.durationOfPregnancy,
         'hospital': widget.hospital,
-        'phoneNumber': widget.phoneNumber,
-        'email': email,
-        'createdAt': FieldValue.serverTimestamp(),
       });
 
       if (userCredential.user != null) {

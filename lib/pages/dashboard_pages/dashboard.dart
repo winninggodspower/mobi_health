@@ -7,6 +7,8 @@ import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'dart:developer';
 
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
+import 'package:provider/provider.dart';
 
 class DashboardIndex extends StatefulWidget {
   const DashboardIndex({super.key});
@@ -31,6 +33,10 @@ class _DashboardIndexState extends State<DashboardIndex> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthenticationProvider>();
+    final user = authProvider.user;
+    final userInfo = authProvider.userInfo;
+    
     return Scaffold(
       bottomNavigationBar: AppButtomNavigation(
         pageController: _pageController,

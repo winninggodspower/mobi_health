@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:mobi_health/pages/authentication_pages/auth_success_page.dart';
-import 'package:mobi_health/pages/authentication_pages/otp_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/auth_success_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/otp_page.dart';
 import 'package:mobi_health/pages/components/app_label.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/theme.dart';
@@ -212,32 +212,38 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         hintText: '+237xxxxxxxxx',
                         // ignore: avoid_unnecessary_containers, unnecessary_const
-                        prefixIcon: Container(
-                            padding: const EdgeInsets.only(
-                                left: 24, top: 8, right: 24),
-                            decoration: const BoxDecoration(
-                                border: Border(
-                              right: BorderSide(
-                                color: Color(0xFF8292AA),
-                                width: 0.87,
-                              ),
-                            )),
-                            child: InkWell(
-                              onTap: () {
-                                showCountryPicker(
-                                    context: context,
-                                    countryListTheme:
-                                        const CountryListThemeData(
-                                      bottomSheetHeight: 550,
-                                    ),
-                                    onSelect: ((value) => {
-                                          setState(() {
-                                            selectedCountry = value;
-                                          })
-                                        }));
-                              },
-                              child: Text('${selectedCountry.flagEmoji}'),
-                            )),
+                        prefixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.only(
+                                    left: 24, top: 8, right: 24),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                  right: BorderSide(
+                                    color: Color(0xFF8292AA),
+                                    width: 0.87,
+                                  ),
+                                )),
+                                child: InkWell(
+                                  onTap: () {
+                                    showCountryPicker(
+                                        context: context,
+                                        countryListTheme:
+                                            const CountryListThemeData(
+                                          bottomSheetHeight: 550,
+                                        ),
+                                        onSelect: ((value) => {
+                                              setState(() {
+                                                selectedCountry = value;
+                                              })
+                                            }));
+                                  },
+                                  child: Text('${selectedCountry.flagEmoji}'),
+                                )),
+                                const SizedBox(width: 24,),
+                          ],
+                        ),
                       ),
                       controller: _phoneController,
                       validator: (value) {
