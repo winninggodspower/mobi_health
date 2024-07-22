@@ -1,10 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/device_permission_provider.dart';
 
 class DashboardProfileNotificationWidget extends StatelessWidget {
   Color imageColor;
   Color notificationColor;
-
 
   DashboardProfileNotificationWidget({
     super.key,
@@ -17,13 +19,23 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
+        GestureDetector(
+          onTap: () {
+            Provider.of<DashboardAction>(context, listen: false).toggleValue();
+            print(
+                'value its ${Provider.of<DashboardAction>(context, listen: false).value}');
+          },
+          child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: imageColor,
               ),
-          child: Image.asset('assets/profile-pic.png', width: 35,) //profile image of logged in image,
+              child: Image.asset(
+                'assets/profile-pic.png',
+                width: 35,
+              ) //profile image of logged in image,
+              ),
         ),
         Badge(
           label: const Text('2'),

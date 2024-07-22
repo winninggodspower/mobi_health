@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobi_health/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/pages/components/auth_question.dart';
 import 'package:mobi_health/pages/authentication/hospital_pages/register.dart';
-import 'package:mobi_health/theme.dart';
 
 // class OnBoarding extends StatelessWidget
 
@@ -13,11 +13,13 @@ class OnBoardingSignup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: SingleChildScrollView(
-        
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 75, 18, 60),
-          child: Expanded(
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 75, 18, 60),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
