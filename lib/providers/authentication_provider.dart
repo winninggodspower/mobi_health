@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer' as developer;
 
 class AuthenticationProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,9 +14,11 @@ class AuthenticationProvider extends ChangeNotifier {
   AuthenticationProvider() {
     _auth.authStateChanges().listen((user) async {
       _user = user;
+      developer.log(user!.displayName as String );
       if (user != null) {
         await _fetchUserInformation(user.uid);
       }
+
       notifyListeners();
     });
   }
@@ -82,21 +85,23 @@ class AuthenticationProvider extends ChangeNotifier {
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
       if (userDoc.exists) {
         Map? userInfo = userDoc.data() as Map<String, dynamic>?;
+        developer.log(userInfo.toString());
 
-        String userType = userInfo?['userType'] == 'hospital' ? 'hospital' : 'patient';
+        String userType = (userInfo?['userType'] ?? false) == 'hospital' ? 'hospital' : 'patient';
 
-        if (_userInfo?['userType'] == 'hospital') {
+        if (_userInfo?['userType'] == 'hospital' || _userInfo?['userType'] == 'patient') {
           DocumentSnapshot detailDoc = await _firestore.collection(userType).doc(uid).get();
           
           if (detailDoc.exists) {
             Map<String, dynamic>? detailInfo = detailDoc.data() as Map<String, dynamic>?;
             if (detailInfo != null) {
+              developer.log(detailInfo.toString());
               userInfo?.addAll(detailInfo);
             }
           }
 
-          _userInfo = userInfo as Map<String, dynamic>;
         }
+        _userInfo = userInfo as Map<String, dynamic>;
       } else {
         _userInfo = null;
       }
