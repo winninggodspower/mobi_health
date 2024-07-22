@@ -30,21 +30,3 @@ Widget materialButton({
     ),
   );
 }
-
-// TextButton textButtons(String text, Color textColor, bkColor, VoidCallback onClick) {
-//   return TextButton(
-//     onPressed: onClick,
-//     style: TextButton.styleFrom(
-//       backgroundColor: bkColor,
-//       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 90),
-//     ),
-//     child: Text(
-//       text,
-//       style: GoogleFonts.openSans(
-//         fontSize: 19,
-//         color: textColor,
-//         fontWeight: FontWeight.w500,
-//       ),
-//     ),
-//   );
-// }
