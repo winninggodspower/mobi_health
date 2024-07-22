@@ -11,6 +11,7 @@ import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/services/health_service.dart';
+import 'package:mobi_health/services/notification_service.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
@@ -45,7 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   void initState() {
     Health().configure(useHealthConnectIfAvailable: true);
-    developer.log('init ran');
     super.initState();
   }
 
@@ -86,10 +86,19 @@ class _HomePageState extends State<HomePage> {
     final user = authProvider.user;
     final userInfo = authProvider.userInfo;
 
+    int durationOfPregnancy = calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy']);
+
     final permissionProvider = context.watch<DevicePermissionProvider>();
     if (permissionProvider.isAuthorized) {
       fetchData();
     }
+
+    //show notification
+    NotificationService _notificationService = NotificationService(context: context);
+    _notificationService.showNotification(
+        'Health Alert',
+        'Your step count is outside the normal range.',
+      );
 
     return SafeArea(
           child: Padding(
@@ -112,7 +121,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             Text(
-              'Pregnancy week : ${calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy'])}',
+              'Pregnancy week : ${durationOfPregnancy}',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!

@@ -1,5 +1,57 @@
-
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:mobi_health/services/notification_service.dart';
+
+
+class HealthDataService {
+  final BuildContext context;
+  late NotificationService _notificationService;
+
+  HealthDataService({required this.context}){
+    _notificationService = NotificationService(context: context);
+  }
+
+  HealthData fetchHealthData() {
+    HealthData mockData = generateMockHealthData();
+    _checkHealthData(mockData);
+    return mockData;
+  }
+
+  void _checkHealthData(HealthData data) {
+    if (data.steps < 3000 || data.steps > 10000) {
+      _notificationService.showNotification(
+        'Health Alert',
+        'Your step count is outside the normal range.',
+      );
+    }
+    if (data.heartRate < 60 || data.heartRate > 100) {
+      _notificationService.showNotification(
+        'Health Alert',
+        'Your heart rate is outside the normal range.',
+      );
+    }
+    if (data.bodyTemperature < 35.0 || data.bodyTemperature > 38.0) {
+      _notificationService.showNotification(
+        'Health Alert',
+        'Your body temperature is outside the normal range.',
+      );
+    }
+    if (data.sleepHours < 6.0 || data.sleepHours > 9.0) {
+      _notificationService.showNotification(
+        'Health Alert',
+        'Your sleep hours are outside the normal range.',
+      );
+    }
+    if (data.weight < 50.0 || data.weight > 100.0) {
+      _notificationService.showNotification(
+        'Health Alert',
+        'Your weight is outside the normal range.',
+      );
+    }
+  }
+}
+
 
 int calculateCurrentDurationOfPregnancy(Timestamp createdAt, int initialDurationInWeeks) {
   // Convert the Firestore Timestamp to DateTime
@@ -18,4 +70,34 @@ int calculateCurrentDurationOfPregnancy(Timestamp createdAt, int initialDuration
   int currentDurationInWeeks = currentDurationInDays ~/ 7;
 
   return currentDurationInWeeks;
+}
+
+class HealthData {
+  final DateTime date;
+  final int steps;
+  final int heartRate;
+  final double bodyTemperature;
+  final double sleepHours;
+  final double weight;
+
+  HealthData({
+    required this.date,
+    required this.steps,
+    required this.heartRate,
+    required this.bodyTemperature,
+    required this.sleepHours,
+    required this.weight,
+  });
+}
+
+HealthData generateMockHealthData() {
+  var random = Random();
+  return HealthData(
+    date: DateTime.now(),
+    steps: 5000 + random.nextInt(5000),
+    heartRate: 60 + random.nextInt(40),
+    bodyTemperature: 36.0 + random.nextDouble() * 2.0,
+    sleepHours: 4.0 + random.nextDouble() * 4.0,
+    weight: 60.0 + random.nextDouble() * 40.0,
+  );
 }
