@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health/health.dart';
-import 'package:mobi_health/pages/authentication/hospital_pages/register.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/services/health_service.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
 import 'package:provider/provider.dart';
 import 'dart:developer' as developer;
+
+import 'package:workmanager/workmanager.dart';
 
 class HomePage extends StatefulWidget {
   final PageController pageController;
@@ -42,9 +44,22 @@ class _HomePageState extends State<HomePage> {
 
   AppState _state = AppState.DATA_NOT_FETCHED;
 
+   HealthData? _healthData;
+  late HealthDataService _healthDataService;
+
   void initState() {
     Health().configure(useHealthConnectIfAvailable: true);
-    developer.log('init ran');
+
+    // add background task
+    Workmanager().registerPeriodicTask(
+      '1',
+      'fetchHealthData',
+      frequency: const Duration(minutes: 15),
+    );
+
+    _healthDataService = HealthDataService(context: context);
+    _loadHealthData();
+
     super.initState();
   }
 
@@ -79,11 +94,21 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _loadHealthData() async {
+    HealthData? data = await _healthDataService.getHealthData();
+    data ??= _healthDataService.fetchHealthData();
+    setState(() {
+      _healthData = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthenticationProvider>();
     final user = authProvider.user;
     final userInfo = authProvider.userInfo;
+
+    int durationOfPregnancy = calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy']);
 
     final permissionProvider = context.watch<DevicePermissionProvider>();
     if (permissionProvider.isAuthorized) {
@@ -111,7 +136,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             Text(
-              'Pregnancy week : ${userInfo?['durationOfPregnancy']}',
+              'Pregnancy week : ${durationOfPregnancy}',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!
@@ -140,33 +165,33 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 6,
             ),
-            if(!permissionProvider.isAuthorized)
-              Column(
-                children: [
-                  const SizedBox(height: 30,),
-                  ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
-                      // widget.pageController.jumpToPage(3);
-                      },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      textStyle: GoogleFonts.alegreyaSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    child: Text('authorize health connect'))
-                ],
-              )
-            else
+            // if(!permissionProvider.isAuthorized)
+            //   Column(
+            //     children: [
+            //       const SizedBox(height: 30,),
+            //       ElevatedButton(
+            //         onPressed: (){
+            //           Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
+            //           // widget.pageController.jumpToPage(3);
+            //           },
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: AppColors.primaryColor,
+            //           textStyle: GoogleFonts.alegreyaSans(
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //         child: Text('authorize health connect'))
+            //     ],
+            //   )
+            // else
               Column(
                 children: [
                   HealthCard(
                     leadingIcon: svg_assets.sleepCircleIcon,
                     title: 'Sleep',
                     subtitle: 'Total hours of sleep',
-                    mainValue: '7.5 hours',
+                    mainValue: '${_healthData?.sleepHours.toStringAsFixed(1)} hours',
                     statusWidget: Container(
                       decoration: BoxDecoration(
                         color: AppColors.primary_200Color,
@@ -193,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.heartCircleIcon,
                           title: 'Heart Rate',
                           subtitle: 'current Heart rate',
-                          mainValue: '75 bpm',
+                          mainValue: '${_healthData?.heartRate} bpm',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -213,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.temperatureCircleIcon,
                           title: 'Body Temperature',
                           subtitle: 'current Temperature',
-                          mainValue: '36.5°C',
+                          mainValue: '${_healthData?.bodyTemperature.toStringAsFixed(1)}°C',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -233,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.weightCircleIcon,
                           title: 'Weight',
                           subtitle: 'Recent measurement',
-                          mainValue: '70Kg',
+                          mainValue: '${_healthData?.weight.toStringAsFixed(1)}Kg',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -268,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.stepsCircleIcon,
                           title: 'Steps/Activity',
                           subtitle: 'steps taken today',
-                          mainValue: '135 steps',
+                          mainValue: '${_healthData?.steps} steps',
                           statusWidget: Text(
                             'Low',
                             style: GoogleFonts.alegreya(
