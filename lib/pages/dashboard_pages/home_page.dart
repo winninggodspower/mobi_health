@@ -93,12 +93,14 @@ class _HomePageState extends State<HomePage> {
       fetchData();
     }
 
-    //show notification
-    NotificationService _notificationService = NotificationService(context: context);
-    _notificationService.showNotification(
-        'Health Alert',
-        'Your step count is outside the normal range.',
-      );
+    // //show notification
+    // NotificationService _notificationService = NotificationService(context: context);
+    // _notificationService.showNotification(
+    //     'Health Alert',
+    //     'Your step count is outside the normal range.',
+    //   );
+
+    HealthData healthData = HealthDataService(context: context).fetchHealthData();
 
     return SafeArea(
           child: Padding(
@@ -176,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                     leadingIcon: svg_assets.sleepCircleIcon,
                     title: 'Sleep',
                     subtitle: 'Total hours of sleep',
-                    mainValue: '7.5 hours',
+                    mainValue: '${healthData.sleepHours.toStringAsFixed(1)} hours',
                     statusWidget: Container(
                       decoration: BoxDecoration(
                         color: AppColors.primary_200Color,
@@ -203,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.heartCircleIcon,
                           title: 'Heart Rate',
                           subtitle: 'current Heart rate',
-                          mainValue: '75 bpm',
+                          mainValue: '${healthData.heartRate} bpm',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -223,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.temperatureCircleIcon,
                           title: 'Body Temperature',
                           subtitle: 'current Temperature',
-                          mainValue: '36.5°C',
+                          mainValue: '${healthData.bodyTemperature.toStringAsFixed(1)}°C',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -243,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.weightCircleIcon,
                           title: 'Weight',
                           subtitle: 'Recent measurement',
-                          mainValue: '70Kg',
+                          mainValue: '${healthData.weight.toStringAsFixed(1)}Kg',
                           statusWidget: Row(
                             children: [
                               Text(
@@ -278,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                           leadingIcon: svg_assets.stepsCircleIcon,
                           title: 'Steps/Activity',
                           subtitle: 'steps taken today',
-                          mainValue: '135 steps',
+                          mainValue: '${healthData.steps} steps',
                           statusWidget: Text(
                             'Low',
                             style: GoogleFonts.alegreya(
