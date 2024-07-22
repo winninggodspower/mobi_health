@@ -10,6 +10,7 @@ import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/services/health_service.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
 import 'package:mobi_health/health_connect_settings.dart' as health_settings;
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             Text(
-              'Pregnancy week : ${userInfo?['durationOfPregnancy']}',
+              'Pregnancy week : ${calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy'])}',
               style: Theme.of(context)
                   .textTheme
                   .bodySmall!
@@ -140,26 +141,26 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 6,
             ),
-            if(!permissionProvider.isAuthorized)
-              Column(
-                children: [
-                  const SizedBox(height: 30,),
-                  ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
-                      // widget.pageController.jumpToPage(3);
-                      },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      textStyle: GoogleFonts.alegreyaSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    child: Text('authorize health connect'))
-                ],
-              )
-            else
+            // if(!permissionProvider.isAuthorized)
+            //   Column(
+            //     children: [
+            //       const SizedBox(height: 30,),
+            //       ElevatedButton(
+            //         onPressed: (){
+            //           Navigator.push(context, MaterialPageRoute(builder: (context)=> const HospitalRegisterPage()));
+            //           // widget.pageController.jumpToPage(3);
+            //           },
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: AppColors.primaryColor,
+            //           textStyle: GoogleFonts.alegreyaSans(
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //         child: Text('authorize health connect'))
+            //     ],
+            //   )
+            // else
               Column(
                 children: [
                   HealthCard(
