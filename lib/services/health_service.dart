@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobi_health/services/notification_service.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HealthDataService {
   final BuildContext context;
@@ -15,7 +16,24 @@ class HealthDataService {
   HealthData fetchHealthData() {
     HealthData mockData = generateMockHealthData();
     _checkHealthData(mockData);
+
+    // Save the new data to SharedPreferences
+    saveHealthData(mockData.toJson());
     return mockData;
+  }
+
+  Future<void> saveHealthData(Map<String, dynamic> healthData) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('healthData', jsonEncode(healthData));
+  }
+
+  Future<HealthData?> getHealthData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? healthDataString = prefs.getString('healthData');
+    if (healthDataString != null) {
+      return HealthData.fromJson(jsonDecode(healthDataString));
+    }
+    return null;
   }
 
   void _checkHealthData(HealthData data) {
@@ -88,6 +106,28 @@ class HealthData {
     required this.sleepHours,
     required this.weight,
   });
+
+    Map<String, dynamic> toJson() {
+    return {
+      'date': date.toIso8601String(),
+      'steps': steps,
+      'heartRate': heartRate,
+      'bodyTemperature': bodyTemperature,
+      'sleepHours': sleepHours,
+      'weight': weight,
+    };
+  }
+
+  factory HealthData.fromJson(Map<String, dynamic> json) {
+    return HealthData(
+      date: DateTime.parse(json['date']),
+      steps: json['steps'],
+      heartRate: json['heartRate'],
+      bodyTemperature: json['bodyTemperature'],
+      sleepHours: json['sleepHours'],
+      weight: json['weight'],
+    );
+  }
 }
 
 HealthData generateMockHealthData() {

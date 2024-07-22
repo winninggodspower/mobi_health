@@ -8,12 +8,38 @@ import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/services/health_service.dart';
 import 'package:mobi_health/services/notification_service.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
+import 'dart:developer' as developer;
 
 import 'firebase_options.dart';
 
 import 'theme.dart';
+
+class GlobalVariable {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+}
+
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+  void callbackDispatcher() {
+    Workmanager().executeTask((task, inputData) {
+      developer.log('the task got executed');
+      switch (task) {
+        case 'fetchHealthData':
+          BuildContext? context = GlobalVariable.navigatorKey.currentContext;
+           if (context != null) {
+            HealthDataService(context: context).fetchHealthData();
+          } else {
+            // Handle the case where context is null, maybe log or retry
+            print("Context is null, cannot fetch health data.");
+          }
+          break;
+      }
+    return Future.value(true);
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +60,12 @@ class MainApp extends StatelessWidget {
     // initialize notification service
     NotificationService(context: context).init();
 
+    // initalize background workmanager
+    Workmanager().initialize(
+      callbackDispatcher,
+      isInDebugMode: true
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=> AuthenticationProvider()),
@@ -41,6 +73,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: appTheme,
+        navigatorKey: GlobalVariable.navigatorKey,
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
             return authProvider.isLoggedIn ? const DashboardIndex() : const OnBoardingPage();
