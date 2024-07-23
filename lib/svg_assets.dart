@@ -17,3 +17,7 @@ const String profilePic = 'assets/profile-pic.png';
 const String healthLogoPic = 'assets/mobi-health-logo.png';
 
 
+const String contactIcon = 'assets/svgs/contact.svg';
+const String avatartIcon = 'assets/svgs/avatart.svg';
+const String logoutIcon = 'assets/svgs/logout.svg';
+

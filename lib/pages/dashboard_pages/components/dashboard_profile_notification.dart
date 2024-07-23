@@ -1,12 +1,15 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/device_permission_provider.dart';
 
+
+
+
 class DashboardProfileNotificationWidget extends StatelessWidget {
   Color imageColor;
   Color notificationColor;
+
 
   DashboardProfileNotificationWidget({
     super.key,
@@ -46,4 +49,5 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       ],
     );
   }
+
 }
