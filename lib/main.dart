@@ -1,5 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/actionView/update_password.dart';
+import 'package:mobi_health/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/dashboard_pages/connect_device.dart';
@@ -70,14 +75,7 @@ class MainApp extends StatelessWidget {
         theme: appTheme,
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
-            return
-                // ExpertChatDashboardPage ();
-                //  const WellnessHub();
-                // const ConnectDevicePage();
-                // authProvider.isLoggedIn
-                //     ?
-                const DashboardIndex();
-            //     : const OnBoardingPage();
+             return authProvider.isLoggedIn ? const DashboardIndex() : const OnBoardingPage();
           },
         ),
         routes: {
@@ -86,7 +84,6 @@ class MainApp extends StatelessWidget {
           '/login': (context) => const SafeArea(child: LoginPage()),
           '/onboarding': (context) => const SafeArea(child: OnBoardingSignup()),
           '/dashboard': (context) => const SafeArea(child: DashboardIndex()),
-          '/updateScreen': (context) => const SafeArea(child: UpdatePasswordScreen()),
         },
       ),
     );
