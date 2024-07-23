@@ -10,3 +10,16 @@ class DevicePermissionProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+// if the icon on the dashBoard is clicked
+class DashboardAction with ChangeNotifier {
+  bool _isTrue = false;
+
+  bool get value => _isTrue;
+
+  void toggleValue() {
+    _isTrue = !_isTrue;
+    notifyListeners();
+  }
+}
