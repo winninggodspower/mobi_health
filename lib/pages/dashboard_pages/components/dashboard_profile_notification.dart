@@ -1,8 +1,6 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter/material.dart';
-import 'package:mobi_health/theme.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
@@ -27,8 +25,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         GestureDetector(
           key: _key,
           onTap: () {
-            context.read<DashboardAction>().toggleValue();
-            // showPopupMenu(context);
+            showPopupMenu(context);
           },
           child: Container(
               padding: const EdgeInsets.all(3),
@@ -70,17 +67,46 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       items: [
         PopupMenuItem<int>(
           value: 0,
-          child: Text('First Option'),
+          child: OptionItem(
+            text: 'Emergency contact',
+            icon: iconContainer(
+              Icons.phone_callback_outlined,
+            ),
+          ),
         ),
         PopupMenuItem<int>(
           value: 1,
-          child: Text('Second Option'),
+          child: OptionItem(
+            text: 'Personal Details',
+            icon: iconContainer(
+              Icons.person_3_outlined,
+            ),
+          ),
         ),
         PopupMenuItem<int>(
           value: 2,
           child: OptionItem(
+            text: 'Update Password',
+            icon: iconContainer(
+              Icons.settings,
+            ),
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 3,
+          child: OptionItem(
+            text: 'Help',
+            icon: iconContainer(Icons.question_mark_outlined),
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 4,
+          child: OptionItem(
             text: 'Logout',
-            iconPath: svg_assets.logoutIcon,
+            icon: SvgPicture.asset(
+              svg_assets.logoutIcon,
+            ),
+            // iconPath: svg_assets.logoutIcon,
           ),
         ),
       ],
@@ -88,12 +114,18 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       // Handle your logic based on the selected value
       if (value != null) {
         print('Selected value: $value');
-        if (value == 2) {
+        if (value == 4) {
           context.read<AuthenticationProvider>().signOut();
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const OnBoardingSignup()));
+        } else if (value == 0) {
+          navigateTo(const EmergencyContact());
+        } else if (value == 2) {
+          navigateTo(const UpdatePasswordScreen());
+        } else if (value == 3) {
+          navigateTo(const ChatScreen());
         }
       }
     });
@@ -101,16 +133,35 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
 
   Widget OptionItem({
     required String text,
-    required String iconPath,
+    required Widget icon,
+    // required String iconPath,
   }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: SvgPicture.asset(
-          iconPath,
-        ),
+        leading: icon,
         title: Text(text),
         trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 16),
+      ),
+    );
+  }
+
+  Widget iconContainer(
+    IconData icon,
+  ) {
+    return Container(
+      width: 33,
+      height: 33,
+      decoration: const BoxDecoration(
+        color: AppColors.primary_200Color,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          color: AppColors.primary_800Color,
+          size: 20,
+        ),
       ),
     );
   }
