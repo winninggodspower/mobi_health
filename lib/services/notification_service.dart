@@ -8,13 +8,12 @@ import 'dart:developer' as developer;
 
 class NotificationService {
   final BuildContext context;
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   NotificationService({required this.context});
 
   void init() async {
-    developer.log('int notification running');
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('app_icon');
@@ -69,7 +68,7 @@ class NotificationService {
       );
   }
 
-  Future<void> showNotification(String title, String body) async {
+  static Future<void> showNotification(String title, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails('your channel id', 'your channel name',
             channelDescription: 'your channel description',

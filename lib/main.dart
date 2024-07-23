@@ -8,6 +8,14 @@ import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
 
+import 'package:mobi_health/providers/health_data_provider.dart';
+import 'package:mobi_health/services/health_service.dart';
+import 'package:mobi_health/services/notification_service.dart';
+import 'package:workmanager/workmanager.dart';
+import 'dart:developer' as developer;
+
+import 'firebase_options.dart';
+
 
 class GlobalVariable {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -16,16 +24,11 @@ class GlobalVariable {
 @pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
   void callbackDispatcher() {
     Workmanager().executeTask((task, inputData) {
-      developer.log('the task got executed');
+      developer.log('the task got executed $task with data $inputData');
       switch (task) {
         case 'fetchHealthData':
-          BuildContext? context = GlobalVariable.navigatorKey.currentContext;
-           if (context != null) {
-            HealthDataService(context: context).fetchHealthData();
-          } else {
-            // Handle the case where context is null, maybe log or retry
-            print("Context is null, cannot fetch health data.");
-          }
+          final provider = HealthDataProvider();
+          provider.fetchHealthData();
           break;
       }
     return Future.value(true);
@@ -38,6 +41,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // initalize background workmanager
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true
+  );
+
   runApp(const MainApp());
 }
 
@@ -46,16 +56,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-aster
+    // initialize notification service
+    NotificationService(context: context).init();
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
-        ChangeNotifierProvider(create: (context) => DevicePermissionProvider()),
+        ChangeNotifierProvider(create: (context)=> AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context)=> DevicePermissionProvider()),
+        ChangeNotifierProvider(create: (context)=> HealthDataProvider()),
         ChangeNotifierProvider(create: (context) => DashboardAction())
       ],
       child: MaterialApp(
         theme: appTheme,
-er
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
             return

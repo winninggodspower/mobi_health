@@ -8,7 +8,7 @@ import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_n
 import 'package:mobi_health/pages/dashboard_pages/components/health_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
-import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/providers/health_data_provider.dart';
 import 'package:mobi_health/services/health_service.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/theme.dart';
@@ -44,11 +44,10 @@ class _HomePageState extends State<HomePage> {
 
   AppState _state = AppState.DATA_NOT_FETCHED;
 
-   HealthData? _healthData;
-  late HealthDataService _healthDataService;
-
   void initState() {
     Health().configure(useHealthConnectIfAvailable: true);
+
+    Workmanager().cancelAll();
 
     // add background task
     Workmanager().registerPeriodicTask(
@@ -56,9 +55,6 @@ class _HomePageState extends State<HomePage> {
       'fetchHealthData',
       frequency: const Duration(minutes: 15),
     );
-
-    _healthDataService = HealthDataService(context: context);
-    _loadHealthData();
 
     super.initState();
   }
@@ -94,13 +90,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _loadHealthData() async {
-    HealthData? data = await _healthDataService.getHealthData();
-    data ??= _healthDataService.fetchHealthData();
-    setState(() {
-      _healthData = data;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,11 +98,12 @@ class _HomePageState extends State<HomePage> {
     final userInfo = authProvider.userInfo;
 
     int durationOfPregnancy = calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy']);
+    developer.log(userInfo.toString());
 
-    final permissionProvider = context.watch<DevicePermissionProvider>();
-    if (permissionProvider.isAuthorized) {
-      fetchData();
-    }
+    // final permissionProvider = context.watch<DevicePermissionProvider>();
+    // if (permissionProvider.isAuthorized) {
+    //   fetchData();
+    // }
 
     return SafeArea(
           child: Padding(
@@ -185,127 +175,135 @@ class _HomePageState extends State<HomePage> {
             //     ],
             //   )
             // else
-              Column(
-                children: [
-                  HealthCard(
-                    leadingIcon: svg_assets.sleepCircleIcon,
-                    title: 'Sleep',
-                    subtitle: 'Total hours of sleep',
-                    mainValue: '${_healthData?.sleepHours.toStringAsFixed(1)} hours',
-                    statusWidget: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.primary_200Color,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      child: Text(
-                        '12:40 AM - \n 6:50 AM',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 14,
-                          color: AppColors.primary_800Color,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 5,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Column(
-                      children: [
-                        HealthCard(
-                          leadingIcon: svg_assets.heartCircleIcon,
-                          title: 'Heart Rate',
-                          subtitle: 'current Heart rate',
-                          mainValue: '${_healthData?.heartRate} bpm',
-                          statusWidget: Row(
-                            children: [
-                              Text(
-                                'Normal',
-                                style: GoogleFonts.alegreya(
-                                  fontSize: 13.4,
-                                  fontWeight: FontWeight.w700
-                                ),
-                              ),
-                              const SizedBox(width: 15,),
-                              SvgPicture.asset(svg_assets.heartIcon)
-                            ],
+              Consumer<HealthDataProvider>(
+                builder: (context, healthDataProvider, child) {
+                  final healthData = healthDataProvider.healthData;
+                  if (healthData == null) {
+                    return const Center(child: Text('No health data available'));
+                  }
+                  return Column(
+                    children: [
+                      HealthCard(
+                        leadingIcon: svg_assets.sleepCircleIcon,
+                        title: 'Sleep',
+                        subtitle: 'Total hours of sleep',
+                        mainValue: '${healthData.sleepHours.toStringAsFixed(1)} hours',
+                        statusWidget: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primary_200Color,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          child: Text(
+                            '12:40 AM - \n 6:50 AM',
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 14,
+                              color: AppColors.primary_800Color,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(height: 5,),
-                        HealthCard(
-                          leadingIcon: svg_assets.temperatureCircleIcon,
-                          title: 'Body Temperature',
-                          subtitle: 'current Temperature',
-                          mainValue: '${_healthData?.bodyTemperature.toStringAsFixed(1)}°C',
-                          statusWidget: Row(
-                            children: [
-                              Text(
-                                'Low',
-                                style: GoogleFonts.alegreya(
-                                  fontSize: 13.4,
-                                  fontWeight: FontWeight.w700
-                                ),
+                      ),
+                      const SizedBox(height: 5,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        child: Column(
+                          children: [
+                            HealthCard(
+                              leadingIcon: svg_assets.heartCircleIcon,
+                              title: 'Heart Rate',
+                              subtitle: 'current Heart rate',
+                              mainValue: '${healthData.heartRate} bpm',
+                              statusWidget: Row(
+                                children: [
+                                  Text(
+                                    'Normal',
+                                    style: GoogleFonts.alegreya(
+                                      fontSize: 13.4,
+                                      fontWeight: FontWeight.w700
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15,),
+                                  SvgPicture.asset(svg_assets.heartIcon)
+                                ],
                               ),
-                              const SizedBox(width: 15,),
-                              SvgPicture.asset(svg_assets.temperatureIcon)
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5,),
-                        HealthCard(
-                          leadingIcon: svg_assets.weightCircleIcon,
-                          title: 'Weight',
-                          subtitle: 'Recent measurement',
-                          mainValue: '${_healthData?.weight.toStringAsFixed(1)}Kg',
-                          statusWidget: Row(
-                            children: [
-                              Text(
+                            ),
+                            const SizedBox(height: 5,),
+                            HealthCard(
+                              leadingIcon: svg_assets.temperatureCircleIcon,
+                              title: 'Body Temperature',
+                              subtitle: 'current Temperature',
+                              mainValue: '${healthData.bodyTemperature.toStringAsFixed(1)}°C',
+                              statusWidget: Row(
+                                children: [
+                                  Text(
+                                    'Low',
+                                    style: GoogleFonts.alegreya(
+                                      fontSize: 13.4,
+                                      fontWeight: FontWeight.w700
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15,),
+                                  SvgPicture.asset(svg_assets.temperatureIcon)
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 5,),
+                            HealthCard(
+                              leadingIcon: svg_assets.weightCircleIcon,
+                              title: 'Weight',
+                              subtitle: 'Recent measurement',
+                              mainValue: '${healthData.weight.toStringAsFixed(1)}Kg',
+                              statusWidget: Row(
+                                children: [
+                                  Text(
+                                    'Low',
+                                    style: GoogleFonts.alegreya(
+                                      fontSize: 13.4,
+                                      fontWeight: FontWeight.w400
+                                    ),
+                                  ),
+                                  const SizedBox(width: 3,),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.secondary_500Color,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    child: Text(
+                                      '-10.5 kg',
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                        fontSize: 14,
+                                        color: AppColors.gray,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 5,),
+                            HealthCard(
+                              leadingIcon: svg_assets.stepsCircleIcon,
+                              title: 'Steps/Activity',
+                              subtitle: 'steps taken today',
+                              mainValue: '${healthData.steps} steps',
+                              statusWidget: Text(
                                 'Low',
                                 style: GoogleFonts.alegreya(
                                   fontSize: 13.4,
                                   fontWeight: FontWeight.w400
                                 ),
                               ),
-                              const SizedBox(width: 3,),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.secondary_500Color,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                child: Text(
-                                  '-10.5 kg',
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                    color: AppColors.gray,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 5,),
-                        HealthCard(
-                          leadingIcon: svg_assets.stepsCircleIcon,
-                          title: 'Steps/Activity',
-                          subtitle: 'steps taken today',
-                          mainValue: '${_healthData?.steps} steps',
-                          statusWidget: Text(
-                            'Low',
-                            style: GoogleFonts.alegreya(
-                              fontSize: 13.4,
-                              fontWeight: FontWeight.w400
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                    ],
+                  );
+                }
               )
           ],
         ),
