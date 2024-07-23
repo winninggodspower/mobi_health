@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
-import 'package:mobi_health/providers/authentication_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
-import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobi_health/svg_assets.dart' as svg_assets;
+import 'package:mobi_health/providers/authentication_provider.dart';
+import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
 
 class DashboardProfileNotificationWidget extends StatelessWidget {
   Color imageColor;
@@ -26,7 +27,8 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         GestureDetector(
           key: _key,
           onTap: () {
-            showPopupMenu(context);
+            context.read<DashboardAction>().toggleValue();
+            // showPopupMenu(context);
           },
           child: Container(
               padding: const EdgeInsets.all(3),

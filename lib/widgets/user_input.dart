@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 
 class TextInput extends StatelessWidget {
-  final TextEditingController textInput;
+ final TextEditingController textInput;
   final String hintText;
   final Color inputColor, borderColor;
+  final TextInputType textType;
+
   const TextInput({
-    super.key,
+    Key? key,
     required this.textInput,
     required this.hintText,
     required this.inputColor,
     required this.borderColor,
-  });
+    required this.textType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,7 @@ class TextInput extends StatelessWidget {
       child: TextFormField(
         controller: textInput,
         focusNode: FocusNode(),
-        keyboardType: TextInputType.text,
+        keyboardType: textType,
         style: textStyle,
         decoration: InputDecoration(
           hintText: hintText,
