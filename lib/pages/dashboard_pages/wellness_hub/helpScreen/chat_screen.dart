@@ -20,7 +20,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: SafeArea(
@@ -74,8 +73,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(left: 55, right: 55),
-                          child: context.watch<DashboardAction>().isSignalClickValue
-                              ? EmergencyText()
+                          child: context
+                                  .watch<DashboardAction>()
+                                  .isSignalClickValue
+                              ? const EmergencyText()
                               : materialButton(
                                   buttonBkColor: AppColors.secondaryColor,
                                   onPres: () {
@@ -90,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   width: double.infinity,
                                   borderRadiusSize: 5,
                                   height: 50)),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       const ChatBox()

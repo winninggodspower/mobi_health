@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/notification_service.dart';
 import 'providers/health_data_provider.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobi_health/firebase_options.dart';
 import 'pages/dashboard_pages/connect_device.dart';
@@ -17,9 +18,6 @@ import 'package:mobi_health/providers/device_permission_provider.dart';
 
 
 
-
-
-
 class GlobalVariable {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
@@ -27,7 +25,7 @@ class GlobalVariable {
 @pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
   void callbackDispatcher() {
     Workmanager().executeTask((task, inputData) {
-      developer.log('the task got executed $task with data $inputData');
+      // developer.log('the task got executed $task with data $inputData');
       switch (task) {
         case 'fetchHealthData':
           final provider = HealthDataProvider();
@@ -73,11 +71,7 @@ class MainApp extends StatelessWidget {
         theme: appTheme,
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
-            return
-                // authProvider.isLoggedIn
-                //     ?
-                const DashboardIndex();
-            //     : const OnBoardingPage();
+             return authProvider.isLoggedIn ? const DashboardIndex() : const OnBoardingPage();
           },
         ),
         routes: {
