@@ -14,7 +14,6 @@ class AuthenticationProvider extends ChangeNotifier {
   AuthenticationProvider() {
     _auth.authStateChanges().listen((user) async {
       _user = user;
-      developer.log(user!.displayName as String );
       if (user != null) {
         await _fetchUserInformation(user.uid);
       }
@@ -85,11 +84,10 @@ class AuthenticationProvider extends ChangeNotifier {
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
       if (userDoc.exists) {
         Map? userInfo = userDoc.data() as Map<String, dynamic>?;
-        developer.log(userInfo.toString());
 
         String userType = (userInfo?['userType'] ?? false) == 'hospital' ? 'hospital' : 'patient';
 
-        if (_userInfo?['userType'] == 'hospital' || _userInfo?['userType'] == 'patient') {
+        if (userType == 'hospital' || userType == 'patient') {
           DocumentSnapshot detailDoc = await _firestore.collection(userType).doc(uid).get();
           
           if (detailDoc.exists) {
@@ -101,6 +99,8 @@ class AuthenticationProvider extends ChangeNotifier {
           }
 
         }
+
+        developer.log(userInfo.toString());
         _userInfo = userInfo as Map<String, dynamic>;
       } else {
         _userInfo = null;

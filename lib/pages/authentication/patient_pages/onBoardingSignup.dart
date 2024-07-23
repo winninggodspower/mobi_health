@@ -103,7 +103,7 @@ class OnBoardingSignup extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 70, vertical: 15),
                         ),
-                        child: const Text('visit as guest'),
+                        child: const Text('As Hospital'),
                       ),
                     ),
                   ],

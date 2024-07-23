@@ -259,6 +259,7 @@ class _HospitalRegisterPageState extends State<HospitalRegisterPage> {
         await firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
+        print(e);
         ShowSnackBar(context, "error: ${e.message}");
       },
       codeSent: (String verificationId, int? resendToken) {
