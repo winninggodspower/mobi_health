@@ -96,6 +96,7 @@ class _HomePageState extends State<HomePage> {
     final authProvider = context.watch<AuthenticationProvider>();
     final user = authProvider.user;
     final userInfo = authProvider.userInfo;
+    developer.log(userInfo.toString());
 
     int durationOfPregnancy = calculateCurrentDurationOfPregnancy(userInfo?['createdAt'], userInfo?['durationOfPregnancy']);
     developer.log(userInfo.toString());
