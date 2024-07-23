@@ -1,23 +1,21 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
-import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
-import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
-import 'package:mobi_health/pages/onboarding.dart';
-import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'pages/dashboard_pages/connect_device.dart';
+import 'package:mobi_health/pages/onboarding.dart';
+import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
+
 import 'package:mobi_health/providers/health_data_provider.dart';
 import 'package:mobi_health/services/health_service.dart';
 import 'package:mobi_health/services/notification_service.dart';
-import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'dart:developer' as developer;
 
 import 'firebase_options.dart';
 
-import 'theme.dart';
 
 class GlobalVariable {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -56,10 +54,8 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-
     // initialize notification service
     NotificationService(context: context).init();
 
@@ -68,13 +64,20 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> AuthenticationProvider()),
         ChangeNotifierProvider(create: (context)=> DevicePermissionProvider()),
         ChangeNotifierProvider(create: (context)=> HealthDataProvider()),
+        ChangeNotifierProvider(create: (context) => DashboardAction())
       ],
       child: MaterialApp(
         theme: appTheme,
-        navigatorKey: GlobalVariable.navigatorKey,
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
-            return authProvider.isLoggedIn ? const DashboardIndex() : const OnBoardingPage();
+            return
+                // ExpertChatDashboardPage ();
+                //  const WellnessHub();
+                // const ConnectDevicePage();
+                // authProvider.isLoggedIn
+                //     ?
+                const DashboardIndex();
+            //     : const OnBoardingPage();
           },
         ),
         routes: {
@@ -83,6 +86,7 @@ class MainApp extends StatelessWidget {
           '/login': (context) => const SafeArea(child: LoginPage()),
           '/onboarding': (context) => const SafeArea(child: OnBoardingSignup()),
           '/dashboard': (context) => const SafeArea(child: DashboardIndex()),
+          '/updateScreen': (context) => const SafeArea(child: UpdatePasswordScreen()),
         },
       ),
     );
