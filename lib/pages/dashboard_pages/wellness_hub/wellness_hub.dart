@@ -5,7 +5,6 @@ import 'package:mobi_health/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
-import 'package:mobi_health/pages/dashboard_pages/action_dropDown/display_actionList.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 
 class WellnessHub extends StatefulWidget {
@@ -155,7 +154,6 @@ class _WellnessHubState extends State<WellnessHub> {
                         ))
                     .toList(),
               ]),
-              const DisplayActionList()
             ],
           )),
     );
