@@ -1,14 +1,11 @@
 import 'chat_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:mobi_health/theme.dart';
+import '../export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/widgets/app_buttons.dart';
-import 'package:mobi_health/widgets/navigations.dart';
-import 'package:mobi_health/providers/device_permission_provider.dart';
+
+
 
 // bool isSignalClick = false;
+
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
