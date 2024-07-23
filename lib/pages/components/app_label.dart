@@ -13,7 +13,7 @@ class AppLabel extends StatelessWidget {
     return Text(
       textContent,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontSize: 19.22,
+            fontSize: 17,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF384252),
           ));
