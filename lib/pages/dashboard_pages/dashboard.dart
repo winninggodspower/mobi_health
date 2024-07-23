@@ -36,7 +36,17 @@ class _DashboardIndexState extends State<DashboardIndex> {
     final authProvider = context.watch<AuthenticationProvider>();
     final user = authProvider.user;
     final userInfo = authProvider.userInfo;
-    
+
+    if (userInfo?['userType'] == 'hospital') {
+      return patientDashboard();
+    }
+    else{
+      return patientDashboard();
+    }
+
+  }
+
+  Widget patientDashboard(){
     return Scaffold(
       bottomNavigationBar: AppButtomNavigation(
         pageController: _pageController,
@@ -58,4 +68,5 @@ class _DashboardIndexState extends State<DashboardIndex> {
       ),
     );
   }
+  
 }
