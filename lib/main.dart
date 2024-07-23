@@ -71,7 +71,10 @@ class MainApp extends StatelessWidget {
         theme: appTheme,
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
-             return authProvider.isLoggedIn ? const DashboardIndex() : const OnBoardingPage();
+             return 
+             authProvider.isLoggedIn ?
+              const DashboardIndex() 
+              : const OnBoardingPage();
           },
         ),
         routes: {
