@@ -9,7 +9,9 @@ import 'package:mobi_health/widgets/navigations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/helpScreen/chat_screen.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/emergency_con/emergency_contact.dart';
 
 class WellnessHub extends StatefulWidget {
   const WellnessHub({super.key});
@@ -173,18 +175,7 @@ class DisplayActionList extends StatefulWidget {
 }
 
 class _DisplayActionListState extends State<DisplayActionList> {
-  Timer? _timer;
-  bool initValue = false;
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final value = Provider.of<DashboardAction>(context, listen: false).value;
-      setState(() {
-        initValue = value;
-      });
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +184,7 @@ class _DisplayActionListState extends State<DisplayActionList> {
       left: 5,
       right: 5,
       bottom: 80,
-      child: initValue
+      child: context.watch<DashboardAction>().value
           ? Container(
               width: 90,
               margin: const EdgeInsets.only(bottom: 120),
@@ -206,14 +197,18 @@ class _DisplayActionListState extends State<DisplayActionList> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      listOfAction(() {}, Icons.phone_callback_outlined,
+                      listOfAction(() {
+                        navigateTo(const EmergencyContact());
+                      }, Icons.phone_callback_outlined,
                           'Emergency contact'),
                       listOfAction(
                           () {}, Icons.person_3_outlined, 'Personal Details'),
                       listOfAction(() {
                         navigateTo(const UpdatePasswordScreen());
                       }, Icons.settings, 'Update Password'),
-                      listOfAction(() {}, Icons.question_mark_outlined, 'Help'),
+                      listOfAction(() {
+                         navigateTo(const ChatScreen());
+                      }, Icons.question_mark_outlined, 'Help'),
                       listOfAction(() {}, Icons.logout_rounded, 'Logout',
                           bkColor: AppColors.secondary_500Color,
                           iconColor: AppColors.secondaryColor),

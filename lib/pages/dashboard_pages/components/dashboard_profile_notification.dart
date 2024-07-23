@@ -21,9 +21,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Provider.of<DashboardAction>(context, listen: false).toggleValue();
-            print(
-                'value its ${Provider.of<DashboardAction>(context, listen: false).value}');
+            context.read<DashboardAction>().toggleValue();
           },
           child: Container(
               padding: const EdgeInsets.all(3),

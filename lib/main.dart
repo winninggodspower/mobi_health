@@ -9,8 +9,6 @@ import 'package:mobi_health/pages/onboarding.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
-import 'pages/dashboard_pages/components/expert_chat_dashboard_page.dart';
-import 'pages/dashboard_pages/wellness_hub/actionView/update_password.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
@@ -43,9 +41,6 @@ class MainApp extends StatelessWidget {
         home: Consumer<AuthenticationProvider>(
           builder: (context, authProvider, child) {
             return
-                // ExpertChatDashboardPage ();
-                //  const WellnessHub();
-                // const ConnectDevicePage();
                 // authProvider.isLoggedIn
                 //     ?
                 const DashboardIndex();
@@ -58,7 +53,6 @@ class MainApp extends StatelessWidget {
           '/login': (context) => const SafeArea(child: LoginPage()),
           '/onboarding': (context) => const SafeArea(child: OnBoardingSignup()),
           '/dashboard': (context) => const SafeArea(child: DashboardIndex()),
-          '/updateScreen': (context) => const SafeArea(child: UpdatePasswordScreen()),
         },
       ),
     );
