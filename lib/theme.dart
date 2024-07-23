@@ -64,28 +64,28 @@ ThemeData appTheme = ThemeData(
     onSurface: Color(4279966497),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      // style: ButtonStyle(
-      //   padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-      //     const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
-      //   ),
-      //   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-      //     RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.circular(10.0),
-      //     ),
-      //   ),
-      //   backgroundColor: WidgetStateProperty.all<Color>(
-      //     AppColors.primary_500Color,
-      //   ),
-      //   foregroundColor: WidgetStateProperty.all<Color>(
-      //     const Color(0xFFF5F5F5)
-      //   ),
-      //   textStyle: WidgetStateProperty.all<TextStyle>(
-      //     GoogleFonts.alegreya(
-      //       fontSize: 20.0,
-      //       fontWeight: FontWeight.w400,
-      //     ),
-      //   ),
-      // )
+      style: ButtonStyle(
+        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+        ),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+        ),
+        backgroundColor: WidgetStateProperty.all<Color>(
+          AppColors.primary_500Color,
+        ),
+        foregroundColor: WidgetStateProperty.all<Color>(
+          const Color(0xFFF5F5F5)
+        ),
+        textStyle: WidgetStateProperty.all<TextStyle>(
+          GoogleFonts.alegreya(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      )
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
