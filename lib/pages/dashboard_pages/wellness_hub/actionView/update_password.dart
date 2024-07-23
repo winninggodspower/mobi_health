@@ -26,6 +26,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                 const AppLabel(textContent: 'Current Password'),
                 const SizedBox(height: 3),
                 TextInput(
+                  textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
                   hintText: 'John',
                   inputColor: Colors.black,
@@ -35,6 +36,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                 const AppLabel(textContent: 'New Password'),
                 const SizedBox(height: 3),
                 TextInput(
+                  textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
                   hintText: '@John123',
                   inputColor: Colors.black,
@@ -44,6 +46,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                 const AppLabel(textContent: 'Confirm Password'),
                 const SizedBox(height: 3),
                 TextInput(
+                  textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
                   hintText: '@John123',
                   inputColor: Colors.black,
