@@ -14,12 +14,11 @@ class DevicePermissionProvider with ChangeNotifier {
 
 // if the icon on the dashBoard is clicked
 class DashboardAction with ChangeNotifier {
-  bool _isTrue = false;
+  bool _isSignalClick = false;
 
-  bool get value => _isTrue;
-
-  void toggleValue() {
-    _isTrue = !_isTrue;
+  bool get isSignalClickValue => _isSignalClick;
+  void buttonValue() {
+    _isSignalClick = !_isSignalClick;
     notifyListeners();
   }
 }

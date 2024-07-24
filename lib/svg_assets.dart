@@ -14,8 +14,11 @@ const String deviceIcon = 'assets/svgs/device.svg';
 const String bookIcon = 'assets/svgs/icon-park-outline_read-book.svg';
 
 const String profilePic = 'assets/profile-pic.png';
+const String healthLogoPic = 'assets/mobi-health-logo.png';
+
 
 const String contactIcon = 'assets/svgs/contact.svg';
 const String avatartIcon = 'assets/svgs/avatart.svg';
 const String logoutIcon = 'assets/svgs/logout.svg';
+
 

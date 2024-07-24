@@ -6,6 +6,7 @@ Widget materialButton({
   required Color buttonBkColor,
   required Color textColor,
   required VoidCallback onPres,
+  double size = 19,
   double borderRadiusSize = 18.0,
   double? width,
   double? height,
@@ -22,7 +23,7 @@ Widget materialButton({
       child: Text(
         text,
         style: GoogleFonts.openSans(
-          fontSize: 19,
+          fontSize: size,
           color: textColor,
           fontWeight: FontWeight.w500,
         ),

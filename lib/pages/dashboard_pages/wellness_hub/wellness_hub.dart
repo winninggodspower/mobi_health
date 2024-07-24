@@ -2,12 +2,8 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
-import 'package:provider/provider.dart';
-import 'actionView/update_password.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobi_health/widgets/navigations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/article_card.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 
@@ -158,101 +154,8 @@ class _WellnessHubState extends State<WellnessHub> {
                         ))
                     .toList(),
               ]),
-              const DisplayActionList()
             ],
           )),
     );
   }
-}
-
-class DisplayActionList extends StatefulWidget {
-  const DisplayActionList({super.key});
-
-  @override
-  State<DisplayActionList> createState() => _DisplayActionListState();
-}
-
-class _DisplayActionListState extends State<DisplayActionList> {
-  Timer? _timer;
-  bool initValue = false;
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final value = Provider.of<DashboardAction>(context, listen: false).value;
-      setState(() {
-        initValue = value;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 50,
-      left: 5,
-      right: 5,
-      bottom: 80,
-      child: initValue
-          ? Container(
-              width: 90,
-              margin: const EdgeInsets.only(bottom: 120),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(17),
-                  border: Border.all(color: Colors.blue, width: 2)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      listOfAction(() {}, Icons.phone_callback_outlined,
-                          'Emergency contact'),
-                      listOfAction(
-                          () {}, Icons.person_3_outlined, 'Personal Details'),
-                      listOfAction(() {
-                        navigateTo(const UpdatePasswordScreen());
-                      }, Icons.settings, 'Update Password'),
-                      listOfAction(() {}, Icons.question_mark_outlined, 'Help'),
-                      listOfAction(() {}, Icons.logout_rounded, 'Logout',
-                          bkColor: AppColors.secondary_500Color,
-                          iconColor: AppColors.secondaryColor),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : const SizedBox(),
-    );
-  }
-}
-
-Widget listOfAction(VoidCallback onTap, IconData icon, String text,
-    {Color bkColor = AppColors.primary_200Color,
-    Color iconColor = AppColors.primary_800Color}) {
-  return GestureDetector(
-    onTap: onTap,
-    child: ListTile(
-      leading: Container(
-        width: 40.0,
-        height: 40.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: bkColor,
-        ),
-        child: Icon(
-          icon,
-          color: iconColor,
-        ),
-      ),
-      title: Text(
-        text,
-        style: GoogleFonts.openSans(fontSize: 13, color: Colors.black),
-      ),
-      trailing: const Icon(
-        Icons.arrow_forward_ios_rounded,
-        color: AppColors.gray,
-      ),
-    ),
-  );
 }
