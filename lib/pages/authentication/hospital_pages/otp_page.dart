@@ -150,7 +150,7 @@ class _HospitalOtpVerificationPageState extends State<HospitalOtpVerificationPag
                   ),
                   onPressed: () {
                     if (otpCode != null) {
-                      // verifyOtpCode(context, otpCode!);
+                      verifyOtpCode(context, otpCode!);
                     } else {
                       ShowSnackBar(context, "Enter 6-digit code");
                     }
@@ -173,11 +173,22 @@ class _HospitalOtpVerificationPageState extends State<HospitalOtpVerificationPag
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: widget.verificationId,
-      smsCode: optCode
+      smsCode: optCode,
+      
+    );
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dialog from being dismissed by tapping outside
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
 
     try {
       UserCredential userCredential =await _auth.signInWithCredential(credential);
+
+      // if(Userc)
 
       // Construct email using phone number (for linking accounts)
       String email = '${widget.phoneNumber.trim()}@example.com'.toLowerCase();
@@ -202,10 +213,12 @@ class _HospitalOtpVerificationPageState extends State<HospitalOtpVerificationPag
       });
 
       if (userCredential.user != null) {
+        Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context)=> const OtpSuccessPage()));
       }
 
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       ShowSnackBar(context, e.message.toString());
     }
   }
