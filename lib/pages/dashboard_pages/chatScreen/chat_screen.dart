@@ -157,25 +157,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           );
                         },
                       ),
-                      const Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            ChatBubble(
-                              isMe: true,
-                              message:
-                                  'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            ChatBubble(
-                              message:
-                                  'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
-                            ),
-                          ],
-                        ),
-                      ),
+                      
                      ChatBox(receiverId: widget.receiverId, receiverType: widget.receiverType)
                     ],
                   ),

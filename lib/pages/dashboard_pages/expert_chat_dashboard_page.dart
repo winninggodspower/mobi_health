@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobi_health/pages/dashboard_pages/action_dropDown/export_action_drop_down.dart';
-import 'package:mobi_health/pages/dashboard_pages/chatScreen/chat_screen.dart';
+import 'package:mobi_health/pages/dashboard_pages/chat/chat_page.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'dart:developer' as developer;
@@ -197,7 +197,7 @@ class _ExpertChatNotificationState extends State<ExpertChatNotification> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        navigateTo(ChatScreen(receiverId: widget.hopitalId!, receiverType: 'hospital'));
+        navigateTo(ChatPage(receiverId: widget.hopitalId!, receiverType: 'hospital', receiverName: widget.hospitalName,));
       },
       child: Container(
         decoration: BoxDecoration(color: widget.bgColor),
