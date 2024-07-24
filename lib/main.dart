@@ -24,17 +24,16 @@ class GlobalVariable {
       GlobalKey<NavigatorState>();
 }
 
-@pragma(
-    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    developer.log('the task got executed $task with data $inputData');
-    switch (task) {
-      case 'fetchHealthData':
-        final provider = HealthDataProvider();
-        provider.fetchHealthData();
-        break;
-    }
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+  void callbackDispatcher() {
+    Workmanager().executeTask((task, inputData) {
+      developer.log('the task got executed $task with data $inputData');
+      switch (task) {
+        case 'fetchHealthData':
+          final healthProvider = HealthDataProvider();
+          healthProvider.fetchHealthData();
+          break;
+      }
     return Future.value(true);
   });
 }

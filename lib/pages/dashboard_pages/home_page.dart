@@ -45,13 +45,14 @@ class _HomePageState extends State<HomePage> {
 
   void initState() {
     Health().configure(useHealthConnectIfAvailable: true);
-
+    
     Workmanager().cancelAll();
 
     // add background task
     Workmanager().registerPeriodicTask(
       '1',
       'fetchHealthData',
+      initialDelay: const Duration(seconds: 10),
       frequency: const Duration(minutes: 15),
     );
 

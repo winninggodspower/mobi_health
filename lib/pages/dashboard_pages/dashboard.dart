@@ -5,7 +5,7 @@ import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/bottom_navigation.dart';
-import 'package:mobi_health/pages/dashboard_pages/components/expert_chat_dashboard_page.dart';
+import 'package:mobi_health/pages/dashboard_pages/expert_chat_dashboard_page.dart';
 
 
 class DashboardIndex extends StatefulWidget {
@@ -36,7 +36,7 @@ class _DashboardIndexState extends State<DashboardIndex> {
     final userInfo = authProvider.userInfo;
 
     if (userInfo?['userType'] == 'hospital') {
-      return patientDashboard();
+      return hostpitalDashboard();
     }
     else{
       return patientDashboard();
@@ -57,6 +57,30 @@ class _DashboardIndexState extends State<DashboardIndex> {
           const ExpertChatDashboardPage(),
           const WellnessHub(),
           const ConnectDevicePage(),
+        ],
+        onPageChanged: (value) {
+          setState(() {
+            _selectedIndex = value;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget hostpitalDashboard(){
+    return Scaffold(
+      bottomNavigationBar: AppButtomNavigation(
+        pageController: _pageController,
+        selectedIndex: _selectedIndex,
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          Consumer<AuthenticationProvider>(
+            builder: (context, authProvider, _) {
+              return ElevatedButton(onPressed: (authProvider.signOut), child: Text('logout'));
+            }
+          ),
         ],
         onPageChanged: (value) {
           setState(() {
