@@ -5,7 +5,7 @@ import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
 import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/bottom_navigation.dart';
-import 'package:mobi_health/pages/dashboard_pages/components/expert_chat_dashboard_page.dart';
+import 'package:mobi_health/pages/dashboard_pages/expert_chat_dashboard_page.dart';
 
 
 class DashboardIndex extends StatefulWidget {

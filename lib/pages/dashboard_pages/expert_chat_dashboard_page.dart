@@ -100,6 +100,7 @@ class _ExpertChatDashboardPageState extends State<ExpertChatDashboardPage> {
                   ExpertChatNotification(
                     bgColor: AppColors.primary100Color,
                     hospitalName: userHospital?['hospitalData']?['name'],
+                    hopitalId: userHospital?['hospitalId'],
                   ),
                 const SizedBox(
                   height: 39.47,
@@ -152,13 +153,21 @@ class ExpertChatNotification extends StatefulWidget {
   State<ExpertChatNotification> createState() => _ExpertChatNotificationState();
 }
 
+
+
 class _ExpertChatNotificationState extends State<ExpertChatNotification> {
+
+  String? recentMessage;
 
    @override
     void initState() {
       super.initState();
       if (widget.hopitalId?.isNotEmpty ?? false) {
-        getHospitalRecentMessage(widget.hopitalId!);
+        getHospitalRecentMessage(widget.hopitalId!).then((message)=>{
+          setState((){
+            recentMessage = message;
+          },)
+        });
       }
     }
 
@@ -168,7 +177,7 @@ class _ExpertChatNotificationState extends State<ExpertChatNotification> {
 
     // Query the chat collection
     QuerySnapshot querySnapshot = await firestore
-        .collection('chat')
+        .collection('chats')
         .where('sender_id', isEqualTo: hospitalId)
         .orderBy('timestamp', descending: true)
         .limit(1)
@@ -214,7 +223,7 @@ class _ExpertChatNotificationState extends State<ExpertChatNotification> {
                     height: 3.5,
                   ),
                   Text(
-                    'Yeah sure, tell me zafor',
+                    recentMessage ?? '',
                     style: GoogleFonts.inter(
                         fontSize: 12.37, color: AppColors.gray2),
                   )
