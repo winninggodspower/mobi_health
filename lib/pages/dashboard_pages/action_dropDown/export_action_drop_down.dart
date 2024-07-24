@@ -8,14 +8,4 @@ export 'package:provider/provider.dart';
 export '../../../widgets/navigations.dart';
 export 'package:google_fonts/google_fonts.dart';
 export '../../../providers/device_permission_provider.dart';
-<<<<<<< HEAD
-export 'package:mobi_health/pages/dashboard_pages/action_dropDown/chatScreen/chat_screen.dart';
-export 'package:mobi_health/pages/dashboard_pages/action_dropDown/actionView/update_password.dart';
-export 'package:mobi_health/pages/dashboard_pages/action_dropDown/emergency_con/emergency_contact.dart';
-export 'package:mobi_health/widgets/app_buttons.dart';
-=======
-export 'package:mobi_health/pages/dashboard_pages/chat_page/chat_screen.dart';
-export 'package:mobi_health/pages/dashboard_pages/action_dropDown/actionView/update_password.dart';
-export 'package:mobi_health/pages/dashboard_pages/emergency_contact.dart';
-export 'package:mobi_health/widgets/app_buttons.dart';
->>>>>>> f318bb03785fb4259b8f11d87de6a5cdb71fe5fc
+
