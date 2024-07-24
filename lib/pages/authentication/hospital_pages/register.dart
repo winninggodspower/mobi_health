@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -245,8 +246,10 @@ class _HospitalRegisterPageState extends State<HospitalRegisterPage> {
         // Handle invalid form case, such as showing error messages
       }
     }
+    
 
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
     var phoneNumber = "+${selectedCountry.phoneCode}${_phoneController.text}";
 
     // ensure phone number doesn't start with ++

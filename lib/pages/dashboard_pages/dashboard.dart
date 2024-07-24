@@ -38,7 +38,7 @@ class _DashboardIndexState extends State<DashboardIndex> {
     final userInfo = authProvider.userInfo;
 
     if (userInfo?['userType'] == 'hospital') {
-      return patientDashboard();
+      return hostpitalDashboard();
     }
     else{
       return patientDashboard();
@@ -59,6 +59,30 @@ class _DashboardIndexState extends State<DashboardIndex> {
           const ExpertChatDashboardPage(),
           const WellnessHub(),
           const ConnectDevicePage(),
+        ],
+        onPageChanged: (value) {
+          setState(() {
+            _selectedIndex = value;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget hostpitalDashboard(){
+    return Scaffold(
+      bottomNavigationBar: AppButtomNavigation(
+        pageController: _pageController,
+        selectedIndex: _selectedIndex,
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          Consumer<AuthenticationProvider>(
+            builder: (context, authProvider, _) {
+              return ElevatedButton(onPressed: (authProvider.signOut), child: Text('logout'));
+            }
+          ),
         ],
         onPageChanged: (value) {
           setState(() {

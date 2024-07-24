@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   var _obscurePassword;
   var _obscureConfirmPassword;
 
@@ -29,7 +33,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _hospitalController = TextEditingController();
   final TextEditingController _durationOfPregnancyController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -51,23 +54,45 @@ class _RegisterPageState extends State<RegisterPage> {
       displayNameNoCountryCode: "CMR",
       e164Key: "");
 
+  String? selectedHospital;
+  List<String> hospitals = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _obscurePassword = false;
     _obscureConfirmPassword = false;
+
+    fetchHospitals().then((hospitalList) {
+      setState(() {
+        hospitals = hospitalList;
+      });
+    });
   }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _hospitalController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
+
+  Future<List<String>> fetchHospitals() async {
+    List<String> hospitals = [];
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('hospital').get();
+      for (var doc in snapshot.docs) {
+        hospitals.add(doc['name']);
+      }
+    } catch (e) {
+      print('Error fetching hospitals: $e');
+    }
+    return hospitals;
+  }
+
 
 
   @override
@@ -176,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    const AppLabel(textContent: 'Duration ofpregnancy(Optional)'),
+                    const AppLabel(textContent: 'Duration of pregnancy(Optional)'),
                     const SizedBox(height: 14),
                     TextFormField(
                       keyboardType: TextInputType.number,
@@ -194,14 +219,25 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 20),
                     const AppLabel(textContent: "Hospital(Optional)"),
                     const SizedBox(height: 14),
-                    TextFormField(
-                      controller: _hospitalController,
-                      decoration: const InputDecoration(
-                        hintText:
-                            'Select hospital where you do antinatals', // Placeholder text
-                      ),
-                      validator: (value) {
-                        return null;
+                    DropdownButtonFormField<String>(
+                      value: selectedHospital,
+                      hint: Text(
+                        'Select hospital where you do antinatals',
+                        style: Theme.of(context).inputDecorationTheme.hintStyle,
+                        ),
+                      items: hospitals.map((String hospital) {
+                        return DropdownMenuItem<String>(
+                          value: hospital,
+                          child: Text(
+                            hospital,
+                            style: Theme.of(context).inputDecorationTheme.hintStyle
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedHospital = newValue;
+                        });
                       },
                     ),
                     const SizedBox(height: 20),
@@ -345,22 +381,32 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
 
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dialog from being dismissed by tapping outside
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
     var phoneNumber = "+${selectedCountry.phoneCode}${_phoneController.text}";
 
     // ensure phone number doesn't start with ++
     phoneNumber = phoneNumber.startsWith('++') ? phoneNumber.substring(1) : phoneNumber;
     log(phoneNumber);
 
-    await firebaseAuth.verifyPhoneNumber(
+    await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        await firebaseAuth.signInWithCredential(credential);
+        await _firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
+        Navigator.pop(context);
         ShowSnackBar(context, "error: ${e.message}");
       },
       codeSent: (String verificationId, int? resendToken) {
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -370,7 +416,7 @@ class _RegisterPageState extends State<RegisterPage> {
               lastName: _lastNameController.text,
               dateOfBirth: _selectedDateOfBirth!,
               durationOfPregnancy: int.parse(_durationOfPregnancyController.text),
-              hospital: _hospitalController.text,
+              hospital: selectedHospital!,
               phoneNumber: phoneNumber,
               password: _passwordController.text,
             ),

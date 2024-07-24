@@ -40,6 +40,18 @@ import 'dart:developer' as developer;
     }
   }
 
+HealthData generateMockHealthData() {
+  var random = Random();
+  return HealthData(
+    date: DateTime.now(),
+    steps: 5000 + random.nextInt(5000),
+    heartRate: 60 + random.nextInt(40),
+    bodyTemperature: 36.0 + random.nextDouble() * 2.0,
+    sleepHours: 4.0 + random.nextDouble() * 4.0,
+    weight: 60.0 + random.nextDouble() * 40.0,
+  );
+}
+
 int calculateCurrentDurationOfPregnancy(Timestamp createdAt, int initialDurationInWeeks) {
   // Convert the Firestore Timestamp to DateTime
   DateTime createdAtDate = createdAt.toDate();
@@ -97,16 +109,4 @@ class HealthData {
       weight: json['weight'],
     );
   }
-}
-
-HealthData generateMockHealthData() {
-  var random = Random();
-  return HealthData(
-    date: DateTime.now(),
-    steps: 5000 + random.nextInt(5000),
-    heartRate: 60 + random.nextInt(40),
-    bodyTemperature: 36.0 + random.nextDouble() * 2.0,
-    sleepHours: 4.0 + random.nextDouble() * 4.0,
-    weight: 60.0 + random.nextDouble() * 40.0,
-  );
 }
