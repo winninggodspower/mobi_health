@@ -1,7 +1,5 @@
 import '../export_action_drop_down.dart';
 
-
-
 class EmergencyContact extends StatelessWidget {
   const EmergencyContact({super.key});
 
@@ -12,11 +10,11 @@ class EmergencyContact extends StatelessWidget {
         appBar: appAppBar('Emergency contact'),
         body: SafeArea(
             child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
+                width: 100.w,
+                height: 100.h,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                    padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -25,12 +23,15 @@ class EmergencyContact extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall!
-                              .copyWith(color: Colors.black),
+                              .copyWith(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 2.h),
                         const AppLabel(
                             textContent: 'Current emergency contact'),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 1.h),
                         TextInput(
                           textType: TextInputType.number,
                           borderColor: AppColors.grayLight,
@@ -38,16 +39,16 @@ class EmergencyContact extends StatelessWidget {
                           inputColor: Colors.black,
                           textInput: TextEditingController(),
                         ),
-                        const SizedBox(height: 9),
+                        SizedBox(height: 5.h),
                         materialButton(
                             buttonBkColor:
                                 const Color.fromARGB(255, 189, 189, 189),
                             onPres: () {},
                             text: "Update Contact",
                             textColor: AppColors.gray,
-                            width: double.infinity,
+                            width: 100.w,
                             borderRadiusSize: 5,
-                            height: 50),
+                            height: 7.h),
                       ],
                     ),
                   ),

@@ -20,5 +20,12 @@ const String healthLogoPic = 'assets/mobi-health-logo.png';
 const String contactIcon = 'assets/svgs/contact.svg';
 const String avatartIcon = 'assets/svgs/avatart.svg';
 const String logoutIcon = 'assets/svgs/logout.svg';
+const String privacyPolicySvgIcon = 'assets/svgs/privacy-policy.svg';
+const String fqaIconSvgIcon = 'assets/svgs/fqaIcon.svg';
+const String aboutIconSvgIcon = 'assets/svgs/aboutIcon.svg';
+const String chatUsIcon = 'assets/svgs/chatUsIcon.svg';
+
+
+
 
 

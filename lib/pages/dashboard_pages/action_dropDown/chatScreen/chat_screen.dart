@@ -2,10 +2,7 @@ import 'chat_widget.dart';
 import '../export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart';
 
-
-
 // bool isSignalClick = false;
-
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -29,11 +26,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 70,
+                        height: 10.h,
                         // color: Colors.red,
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 10, right: 10, bottom: 15),
+                          padding: EdgeInsets.only(
+                              top: 2.h, left: 4.w, right: 4.w, bottom: 2.h),
                           child: Row(
                             children: [
                               GestureDetector(
@@ -41,9 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                     popScreen();
                                   },
                                   child: const Icon(Icons.arrow_back_rounded)),
-                              const SizedBox(width: 15),
+                              SizedBox(width: 5.w),
                               Image.asset(healthLogoPic),
-                              const SizedBox(width: 10),
+                              SizedBox(width: 5.w),
                               Column(
                                 children: [
                                   Text(
@@ -69,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(left: 55, right: 55),
+                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
                           child: context
                                   .watch<DashboardAction>()
                                   .isSignalClickValue
@@ -87,9 +84,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   textColor: AppColors.backgroundColor,
                                   width: double.infinity,
                                   borderRadiusSize: 5,
-                                  height: 50)),
-                      const SizedBox(
-                        height: 10,
+                                  height: 6.h)),
+                      SizedBox(
+                        height: 2.h,
                       ),
                       const ChatBox()
                     ],
@@ -111,75 +108,77 @@ class _EmergencyTextState extends State<EmergencyText> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 250,
-      margin: const EdgeInsets.only(bottom: 10),
+      height: 35.h,
+      margin:  EdgeInsets.only(bottom: 1.h),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(17),
           border: Border.all(color: Colors.blue, width: 2)),
       child: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'What is the emergency ?',
-              style: GoogleFonts.openSans(
-                fontSize: 15,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'What is the emergency ?',
+                style: GoogleFonts.openSans(
+                  fontSize: 15,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            // SizedBox(height: 5),
-            EmergencyInput(
-              borderColor: AppColors.secondaryColor,
-              hintText: 'Whats your emergency?',
-              textInput: TextEditingController(),
-              textType: TextInputType.text,
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              height: 25,
-              child: Row(
-                children: [
-                  Checkbox(
-                    value: _isSelected,
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected = value ?? false;
-                      });
-                    },
-                    activeColor: AppColors.secondaryColor,
-                    checkColor: AppColors.backgroundColor,
-                  ),
-                  Text(
-                    'Notify my emergency contact',
-                    style: GoogleFonts.openSans(
-                      fontSize: 13,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
+              SizedBox(height: 1.h),
+              EmergencyInput(
+                borderColor: AppColors.secondaryColor,
+                hintText: 'Whats your emergency?',
+                textInput: TextEditingController(),
+                textType: TextInputType.text,
+              ),
+              SizedBox(height: 0.02.dp),
+              SizedBox(
+                width: double.infinity,
+                height: 6.h,
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: _isSelected,
+                      onChanged: (value) {
+                        setState(() {
+                          _isSelected = value ?? false;
+                        });
+                      },
+                      activeColor: AppColors.secondaryColor,
+                      checkColor: AppColors.backgroundColor,
                     ),
-                  ),
-                ],
+                    Text(
+                      'Notify my emergency contact',
+                      style: GoogleFonts.openSans(
+                        fontSize: 13,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            materialButton(
-                buttonBkColor: AppColors.secondaryColor,
-                onPres: () {
-                  setState(() {
-                    context.read<DashboardAction>().buttonValue();
-                  });
-                },
-                size: 14,
-                text: "Signal Emergency",
-                textColor: AppColors.backgroundColor,
-                width: 150,
-                borderRadiusSize: 5,
-                height: 40)
-          ],
+              SizedBox(height: 1.h),
+              materialButton(
+                  buttonBkColor: AppColors.secondaryColor,
+                  onPres: () {
+                    setState(() {
+                      context.read<DashboardAction>().buttonValue();
+                    });
+                  },
+                  size: 14,
+                  text: "Signal Emergency",
+                  textColor: AppColors.backgroundColor,
+                  width: 43.w,
+                  borderRadiusSize: 5,
+                  height: 6.h)
+            ],
+          ),
         ),
       ),
     );

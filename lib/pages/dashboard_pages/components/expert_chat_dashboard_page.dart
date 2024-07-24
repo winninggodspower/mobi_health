@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobi_health/widgets/navigations.dart';
-import '../action_dropDown/helpScreen/chat_screen.dart';
+import '../action_dropDown/chatScreen/chat_screen.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 
 class ExpertChatDashboardPage extends StatefulWidget {
