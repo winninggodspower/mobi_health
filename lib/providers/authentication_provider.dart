@@ -138,6 +138,49 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+   Future<void> updateEmergencyContact(String phoneNumber, BuildContext context) async {
+    // show loading animation
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevents dialog from being dismissed by tapping outside
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    try {
+      if (_user != null) {
+        // Update the emergency contact in the 'patient' collection
+        await _firestore.collection('patient').doc(_user!.uid).update({
+          'emergencyContact': phoneNumber,
+        });
+
+        // Update the local _userInfo
+        _userInfo?['emergencyContact'] = phoneNumber;
+        notifyListeners(); // Notify listeners of the change
+
+
+        // show successfully upated contact dialog
+        Navigator.pop(context); // Dismiss the loading dialog
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Emergency contact updated successfully!'),
+            duration: Duration(seconds: 2), // Adjust duration as needed
+          ),
+        );
+      } else {
+        print('User is not logged in.');
+        // Dismiss the dialog
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print('Error updating emergency contact: $e');
+      Navigator.pop(context); // Dismiss the loading dialog
+    }
+
+    
+  }
+
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
