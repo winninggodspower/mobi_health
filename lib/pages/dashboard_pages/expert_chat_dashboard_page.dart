@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobi_health/pages/dashboard_pages/action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/theme.dart';
@@ -33,7 +34,6 @@ class _ExpertChatDashboardPageState extends State<ExpertChatDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthenticationProvider>();   
 
     return SafeArea(
         child: Padding(
@@ -196,60 +196,65 @@ class _ExpertChatNotificationState extends State<ExpertChatNotification> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: widget.bgColor),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Badge(
-                backgroundColor: Color(0xff23BD33),
-                child: Image.asset('assets/mobi-health-logo.png'),
+    return InkWell(
+      onTap: (){
+        navigateTo(const ChatScreen());
+      },
+      child: Container(
+        decoration: BoxDecoration(color: widget.bgColor),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Badge(
+                  backgroundColor: Color(0xff23BD33),
+                  child: Image.asset('assets/mobi-health-logo.png'),
+                ),
+                const SizedBox(
+                  width: 14.13,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.hospitalName,
+                      style: GoogleFonts.openSans(
+                          fontSize: 12.37, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 3.5,
+                    ),
+                    Text(
+                      recentMessage ?? '',
+                      style: GoogleFonts.inter(
+                          fontSize: 12.37, color: AppColors.gray2),
+                    )
+                  ],
+                )
+              ],
+            ),
+            Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+              Text(
+                'just now',
+                style: GoogleFonts.inter(fontSize: 12.37, color: AppColors.gray2),
               ),
               const SizedBox(
-                width: 14.13,
+                height: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.hospitalName,
-                    style: GoogleFonts.openSans(
-                        fontSize: 12.37, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 3.5,
-                  ),
-                  Text(
-                    recentMessage ?? '',
-                    style: GoogleFonts.inter(
-                        fontSize: 12.37, color: AppColors.gray2),
-                  )
-                ],
+              Container(
+                height: 7,
+                width: 7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: const Color(0xff3A6AB3),
+                ),
               )
-            ],
-          ),
-          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(
-              'just now',
-              style: GoogleFonts.inter(fontSize: 12.37, color: AppColors.gray2),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              height: 7,
-              width: 7,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: const Color(0xff3A6AB3),
-              ),
-            )
-          ]),
-        ],
-      ),
+            ]),
+          ],
+        ),
+      )
     );
   }
 }

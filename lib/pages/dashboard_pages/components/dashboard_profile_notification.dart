@@ -1,14 +1,12 @@
 import 'package:flutter_svg/svg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/providers/authentication_provider.dart';
-import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
 
 class DashboardProfileNotificationWidget extends StatelessWidget {
-  Color imageColor;
-  Color notificationColor;
+  final Color imageColor;
+  final Color notificationColor;
   final GlobalKey _key = GlobalKey();
 
   DashboardProfileNotificationWidget({
