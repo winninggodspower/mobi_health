@@ -5,6 +5,7 @@ class AppColors {
   static const Color primaryColor = Color(0xFFAEAFF7);
   static const Color primary_800Color = Color(0xFF1B1E61);
   static const Color primary_200Color = Color(0xFFDEE0F6);
+  static const Color primary_300Color = Color(0xFFC5C7EF);
   static const Color primary50Color = Color(0xffFBFCFE);
   static const Color primary100Color = Color(0xFFF0F1FB);
   static const Color primary_600Color = Color(0xFF4D54CE);
@@ -19,6 +20,7 @@ class AppColors {
   static const Color gray2 = Color(0xFF6E7485);
   static const Color gray3 = Color(0xFFF4F2F1);
   static const Color gray500 = Color(0xFF8292AA);
+  static const Color gray900 = Color(0xFF1D2026);
   static const Color grayLight = Color.fromRGBO(217, 217, 217, 0.3);
   // Add more colors as needed
   static const Color orange =  Color(0xffFE8235);

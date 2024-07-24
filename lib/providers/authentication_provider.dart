@@ -114,6 +114,34 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
+  Future<Map?> fetchInformation(String uid) async {
+     try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+      if (userDoc.exists) {
+        Map? userInfo = userDoc.data() as Map<String, dynamic>?;
+
+        String userType = (userInfo?['userType'] ?? false) == 'hospital' ? 'hospital' : 'patient';
+
+        if (userType == 'hospital' || userType == 'patient') {
+          DocumentSnapshot detailDoc = await _firestore.collection(userType).doc(uid).get();
+          
+          if (detailDoc.exists) {
+            Map<String, dynamic>? detailInfo = detailDoc.data() as Map<String, dynamic>?;
+            if (detailInfo != null) {
+              developer.log(detailInfo.toString());
+              userInfo?.addAll(detailInfo);
+              return userInfo as Map;
+            }
+          }
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<Map?> getUserHospital()async{
     try {
       QuerySnapshot querySnapshot = await _firestore
