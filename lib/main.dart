@@ -32,8 +32,8 @@ class GlobalVariable {
       developer.log('the task got executed $task with data $inputData');
       switch (task) {
         case 'fetchHealthData':
-          final provider = HealthDataProvider();
-          provider.fetchHealthData();
+          final healthProvider = HealthDataProvider();
+          healthProvider.fetchHealthData();
           break;
       }
     return Future.value(true);
