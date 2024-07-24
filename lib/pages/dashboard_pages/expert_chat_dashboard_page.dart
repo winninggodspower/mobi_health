@@ -1,16 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-<<<<<<< HEAD:lib/pages/dashboard_pages/components/expert_chat_dashboard_page.dart
-import 'package:mobi_health/widgets/navigations.dart';
-import '../action_dropDown/chatScreen/chat_screen.dart';
-=======
->>>>>>> f318bb03785fb4259b8f11d87de6a5cdb71fe5fc:lib/pages/dashboard_pages/expert_chat_dashboard_page.dart
-import 'package:mobi_health/pages/dashboard_pages/components/dashboard_profile_notification.dart';
-import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/theme.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as developer;
+import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'components/dashboard_profile_notification.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
+
+
 
 class ExpertChatDashboardPage extends StatefulWidget {
   const ExpertChatDashboardPage({super.key});

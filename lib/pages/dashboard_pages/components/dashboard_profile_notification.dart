@@ -5,7 +5,9 @@ import '../action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
+import 'package:mobi_health/pages/dashboard_pages/emergency_contact.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
+import 'package:mobi_health/pages/dashboard_pages/action_dropDown/actionView/update_password.dart';
 import 'package:mobi_health/pages/dashboard_pages/action_dropDown/personal_details/personal_details.dart';
 
 
