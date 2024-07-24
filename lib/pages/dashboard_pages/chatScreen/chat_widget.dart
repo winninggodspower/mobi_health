@@ -2,8 +2,16 @@ import '../action_dropDown/export_action_drop_down.dart';
 
 
 
+
 class ChatBox extends StatefulWidget {
-  const ChatBox({super.key});
+   final String receiverId;
+  final String receiverType;
+
+  const ChatBox({
+    super.key,
+    required this.receiverId, 
+    required this.receiverType,
+  });
 
   @override
   State<ChatBox> createState() => _ChatBoxState();
@@ -90,3 +98,5 @@ Container chatInput() {
     ),
   );
 }
+
+

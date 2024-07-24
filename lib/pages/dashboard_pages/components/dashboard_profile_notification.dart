@@ -70,7 +70,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       items: [
         PopupMenuItem<int>(
           value: 0,
-          child: OptionItem(
+          child: optionItem(
             text: 'Emergency contact',
             icon: iconContainer(
               Icons.phone_callback_outlined,
@@ -79,7 +79,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         ),
         PopupMenuItem<int>(
           value: 1,
-          child: OptionItem(
+          child: optionItem(
             text: 'Personal Details',
             icon: iconContainer(
               Icons.person_3_outlined,
@@ -88,7 +88,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         ),
         PopupMenuItem<int>(
           value: 2,
-          child: OptionItem(
+          child: optionItem(
             text: 'Update Password',
             icon: iconContainer(
               Icons.settings,
@@ -97,14 +97,14 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         ),
         PopupMenuItem<int>(
           value: 3,
-          child: OptionItem(
+          child: optionItem(
             text: 'Help',
             icon: iconContainer(Icons.question_mark_outlined),
           ),
         ),
         PopupMenuItem<int>(
           value: 4,
-          child: OptionItem(
+          child: optionItem(
             text: 'Logout',
             icon: SvgPicture.asset(
               svg_assets.logoutIcon,
@@ -136,7 +136,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
     });
   }
 
-  Widget OptionItem({
+  Widget optionItem({
     required String text,
     required Widget icon,
     // required String iconPath,

@@ -1,23 +1,68 @@
-import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
+import 'dart:developer' as developer;
 
 import 'chat_widget.dart';
+import '../action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart';
 import 'package:mobi_health/widgets/app_buttons.dart';
-import '../action_dropDown/export_action_drop_down.dart';
+
+
+// bool isSignalClick = false;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String receiverId;
+  final String receiverType;
+
+  const ChatScreen({
+    super.key,
+    required this.receiverId, 
+    required this.receiverType,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late Future<List<Map<String, dynamic>>> _messagesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    final authProvider = context.read<AuthenticationProvider>();
+    final currentUserId = authProvider.user?.uid;
+    _messagesFuture = _fetchAndCombineMessages(currentUserId!, widget.receiverId);
+  }
+
+   Future<List<Map<String, dynamic>>> _fetchAndCombineMessages(String currentUserId, String receiverId) async {
+    var sentMessagesSnapshot = await FirebaseFirestore.instance
+        .collection('chats')
+        .where('senderId', isEqualTo: currentUserId)
+        .where('receiverId', isEqualTo: receiverId)
+        .get();
+
+    var receivedMessagesSnapshot = await FirebaseFirestore.instance
+        .collection('chats')
+        .where('receiverId', isEqualTo: currentUserId)
+        .where('senderId', isEqualTo: receiverId)
+        .get();
+
+    var sentMessages = sentMessagesSnapshot.docs.map((doc) => doc.data()).toList();
+    var receivedMessages = receivedMessagesSnapshot.docs.map((doc) => doc.data()).toList();
+
+    var allMessages = [...sentMessages, ...receivedMessages];
+
+    // Sort messages by timestamp
+    allMessages.sort((a, b) => (a['timestamp'] as Timestamp).compareTo(b['timestamp'] as Timestamp));
+
+    return allMessages;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        // bottomNavigationBar: ,
         body: SafeArea(
             child: Container(
                 // color: Colors.red,
@@ -90,27 +135,54 @@ class _ChatScreenState extends State<ChatScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      const    Padding(
+                      FutureBuilder<List<Map<String, dynamic>>>(
+                        future: _messagesFuture,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          var allMessages = snapshot.data!;
+                          developer.log('all messages' + allMessages.toString());
+                          return ListView.builder(
+                            itemCount: allMessages.length,
+                            itemBuilder: (context, index) {
+                              var message = allMessages[index];
+                              bool isMe = message['senderId'] == context.read<AuthenticationProvider>().user?.uid;
+                              return ChatBubble(
+                                isMe: isMe,
+                                message: message['message'],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      const Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           children: [
                             ChatBubble(
                               isMe: true,
-                              message: 'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
-                              ),
-                            SizedBox(height: 20,),
+                              message:
+                                  'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             ChatBubble(
-                              message: 'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
-                              ),
+                              message:
+                                  'hey i\'m sick what do you want to do about it dfad dfasdf dfasdf asdfas',
+                            ),
                           ],
                         ),
                       ),
-                      const ChatBox()
+                     ChatBox(receiverId: widget.receiverId, receiverType: widget.receiverType)
                     ],
                   ),
                 ))));
   }
 }
+
 
 class ChatBubble extends StatelessWidget {
   final bool isMe;
@@ -124,42 +196,39 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double maxWidth = constraints.maxWidth * 0.7;
-        return Row(
-          mainAxisAlignment: isMe ? MainAxisAlignment.end: MainAxisAlignment.start,
-          children: [
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: maxWidth, // Set the maximum width to 70% of the screen width
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.primary_200Color,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 14, vertical: 8),
-              child: Text(
-                message,
-                softWrap: true,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(
-                      fontSize: 14,
-                      color: AppColors.primary_800Color,
-                      fontWeight: FontWeight.w700,
-                    ),
-                textAlign: isMe? TextAlign.end: TextAlign.start,
-              ),
+    return LayoutBuilder(builder: (context, constraints) {
+      double maxWidth = constraints.maxWidth * 0.7;
+      return Row(
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxWidth:
+                  maxWidth, // Set the maximum width to 70% of the screen width
             ),
-          ],
-        );
-      }
-    );
+            decoration: BoxDecoration(
+              color: AppColors.primary_200Color,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            child: Text(
+              message,
+              softWrap: true,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 14,
+                    color: AppColors.primary_800Color,
+                    fontWeight: FontWeight.w700,
+                  ),
+              textAlign: isMe ? TextAlign.end : TextAlign.start,
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
+
 
 class EmergencyText extends StatefulWidget {
   const EmergencyText({super.key});
