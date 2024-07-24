@@ -1,5 +1,5 @@
 import '../export_action_drop_down.dart';
-
+import 'package:mobi_health/widgets/app_buttons.dart';
 
 
 class UpdatePasswordScreen extends StatelessWidget {
@@ -12,16 +12,16 @@ class UpdatePasswordScreen extends StatelessWidget {
       appBar: appAppBar('Update Password'),
       body: SafeArea(
           child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
+        width: 100.w,
+        height: 100.h,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+            padding:  EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const AppLabel(textContent: 'Current Password'),
-                const SizedBox(height: 3),
+                 SizedBox(height: 1.h),
                 TextInput(
                   textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
@@ -29,9 +29,9 @@ class UpdatePasswordScreen extends StatelessWidget {
                   inputColor: Colors.black,
                   textInput: TextEditingController(),
                 ),
-                const SizedBox(height: 13),
+                 SizedBox(height: 2.h),
                 const AppLabel(textContent: 'New Password'),
-                const SizedBox(height: 3),
+                 SizedBox(height: 1.h),
                 TextInput(
                   textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
@@ -39,9 +39,9 @@ class UpdatePasswordScreen extends StatelessWidget {
                   inputColor: Colors.black,
                   textInput: TextEditingController(),
                 ),
-                const SizedBox(height: 13),
+                 SizedBox(height: 2.h),
                 const AppLabel(textContent: 'Confirm Password'),
-                const SizedBox(height: 3),
+                 SizedBox(height: 1.h),
                 TextInput(
                   textType: TextInputType.text,
                   borderColor: AppColors.grayLight,
@@ -49,15 +49,15 @@ class UpdatePasswordScreen extends StatelessWidget {
                   inputColor: Colors.black,
                   textInput: TextEditingController(),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 4.h),
                 materialButton(
                     buttonBkColor: const Color.fromARGB(255, 189, 189, 189),
                     onPres: () {},
                     text: "Update Password",
                     textColor: AppColors.gray,
-                    width: double.infinity,
+                    width: 100.w,
                     borderRadiusSize: 5,
-                    height: 50),
+                    height: 7.h),
               ],
             ),
           ),

@@ -20,12 +20,14 @@ Widget materialButton({
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadiusSize),
       ),
-      child: Text(
-        text,
-        style: GoogleFonts.openSans(
-          fontSize: size,
-          color: textColor,
-          fontWeight: FontWeight.w500,
+      child: FittedBox(
+        child: Text(
+          text,
+          style: GoogleFonts.openSans(
+            fontSize: size,
+            color: textColor,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     ),
