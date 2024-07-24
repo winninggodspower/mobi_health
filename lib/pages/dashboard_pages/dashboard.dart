@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
+import 'package:mobi_health/providers/authentication_provider.dart';
+import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
+import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/bottom_navigation.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/expert_chat_dashboard_page.dart';
-import 'package:mobi_health/pages/dashboard_pages/connect_device.dart';
-import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
-import 'dart:developer';
 
-import 'package:mobi_health/pages/dashboard_pages/wellness_hub/wellness_hub.dart';
-import 'package:mobi_health/providers/authentication_provider.dart';
-import 'package:provider/provider.dart';
 
 class DashboardIndex extends StatefulWidget {
   const DashboardIndex({super.key});
