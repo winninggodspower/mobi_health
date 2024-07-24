@@ -14,7 +14,7 @@ class _ChatBoxState extends State<ChatBox> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: context.watch<DashboardAction>().isSignalClickValue ? 350 : 560,
+        height: context.watch<DashboardAction>().isSignalClickValue ? 48.h : 78.h,
         // color: const Color.fromARGB(255, 110, 23, 23),
         child: Align(
           alignment: Alignment.bottomCenter,
@@ -28,8 +28,8 @@ class _ChatBoxState extends State<ChatBox> {
                 ),
                 Container(
                   width: double.infinity,
-                  height: 60,
-                  margin: const EdgeInsets.only(left: 15, right: 15),
+                  height: 8.h,
+                  margin:  EdgeInsets.only(left: 5.w, right: 5.w),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       color: AppColors.primary_200Color),
@@ -37,7 +37,7 @@ class _ChatBoxState extends State<ChatBox> {
                     children: [
                       Container(
                         // color: Colors.pink,
-                        width: 90,
+                        width: 21.w,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -53,14 +53,15 @@ class _ChatBoxState extends State<ChatBox> {
                         ),
                       ),
                       chatInput(),
-                      const SizedBox(width: 5),
+                      SizedBox(width: 2.w),
                       const Icon(
                         Icons.send_outlined,
                         color: AppColors.primary_600Color,
                       )
                     ],
                   ),
-                )
+                ),
+                SizedBox(height: 1.h,)
               ],
             ),
           ),
@@ -70,8 +71,8 @@ class _ChatBoxState extends State<ChatBox> {
 
 Container chatInput() {
   return Container(
-    width: 200,
-    height: 48,
+    width: 55.w,
+    height: 6.h,
     child: TextFormField(
       controller: TextEditingController(),
       maxLines: 1,

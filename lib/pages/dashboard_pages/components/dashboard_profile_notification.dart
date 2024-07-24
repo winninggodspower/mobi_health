@@ -1,10 +1,13 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../action_dropDown/help/help_screen.dart';
 import '../action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
+import 'package:mobi_health/pages/dashboard_pages/action_dropDown/personal_details/personal_details.dart';
+
 
 class DashboardProfileNotificationWidget extends StatelessWidget {
   Color imageColor;
@@ -122,10 +125,12 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
                   builder: (context) => const OnBoardingSignup()));
         } else if (value == 0) {
           navigateTo(const EmergencyContact());
+        } else if (value == 1) {
+          navigateTo(DetailsView());
         } else if (value == 2) {
           navigateTo(const UpdatePasswordScreen());
         } else if (value == 3) {
-          navigateTo(const ChatScreen());
+          navigateTo(const HelpView());
         }
       }
     });
@@ -140,7 +145,12 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         leading: icon,
-        title: Text(text),
+        title:  Text(
+          text,
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
+        ), 
+     
         trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 16),
       ),
     );

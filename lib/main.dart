@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobi_health/pages/onboarding.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:mobi_health/services/notification_service.dart';
 import 'package:mobi_health/providers/health_data_provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/dashboard.dart';
@@ -16,6 +17,7 @@ import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
+
 
 class GlobalVariable {
   static final GlobalKey<NavigatorState> navigatorKey =
@@ -61,8 +63,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // initialize notification service
     NotificationService(context: context).init();
-
-    return MultiProvider(
+   return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
         ChangeNotifierProvider(create: (context) => DevicePermissionProvider()),
@@ -89,5 +92,9 @@ class MainApp extends StatelessWidget {
         },
       ),
     );
+         
+         });
+
+    
   }
 }

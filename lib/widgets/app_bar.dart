@@ -13,9 +13,9 @@ AppBar appAppBar(String title) {
     title: Text(
       title,
       style: GoogleFonts.openSans(
-        fontSize: 19,
+        fontSize: 26,
         color: AppColors.primary_800Color,
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
       ),
     ),
   );
