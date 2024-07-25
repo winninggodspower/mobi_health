@@ -116,22 +116,30 @@ class _ChatPageState extends State<ChatPage> {
                 )
               ]
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                textStyle: GoogleFonts.alegreyaSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 52, vertical: 8),
-              ),
-              onPressed: (){
-                setState(() {
-                  showPopup = !showPopup;
-                });
-              },
-              child: Text('Report Emergency'),
+            Consumer<AuthenticationProvider>(
+              builder: (context, authProvider, _) {
+                if(authProvider.userInfo?['userType'] == 'patient'){
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      textStyle: GoogleFonts.alegreyaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 52, vertical: 8),
+                    ),
+                    onPressed: (){
+                      setState(() {
+                        showPopup = !showPopup;
+                      });
+                    },
+                    child: Text('Report Emergency'),
+                  );
+                }else{
+                  return const SizedBox(height: 2);
+                }
+              }
             ),
            Expanded(
              child: Stack(
@@ -142,7 +150,7 @@ class _ChatPageState extends State<ChatPage> {
                        child: _buildMessageList(),
                      )
                    ),
-                  if(showPopup)
+                  if(showPopup )
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       child: ReportEmergencyPopup(),

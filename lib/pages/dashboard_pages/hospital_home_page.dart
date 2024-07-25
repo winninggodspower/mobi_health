@@ -61,7 +61,7 @@ class _HospitalHomePageState extends State<HospitalHomePage> {
           child: Column(children: [
             HospitalDashboardProfileNotificationWidget(),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -79,9 +79,16 @@ class _HospitalHomePageState extends State<HospitalHomePage> {
                               navigateTo(ChatPage(receiverId: user['userId'], receiverType: 'patient', receiverName:user['name'],));
                             },
                             child: Container(
+                              padding:  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.primary_600Color),
+                                borderRadius: BorderRadius.circular(6.0),
+                                color: Colors.white,
+                              ),
                               child: ListTile(
+                                leading: Image.network('https://avatar.iran.liara.run/public/', width: 35),
                                 title: Text(user['name']),
-                                subtitle: Text('view chat'),
+                                subtitle: Text('view chat', style: Theme.of(context).textTheme.bodySmall),
                               )
                             )
                           );
