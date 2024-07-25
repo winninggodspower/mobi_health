@@ -36,10 +36,7 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 color: imageColor,
               ),
-              child: Image.asset(
-                'assets/profile-pic.png',
-                width: 35,
-              ) //profile image of logged in image,
+              child:Image.network('https://avatar.iran.liara.run/public/girl', width: 35),//profile image of logged in image,
               ),
         ),
         Badge(
