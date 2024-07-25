@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobi_health/pages/dashboard_pages/components/hospital_bottom_navigation.dart';
+import 'package:mobi_health/pages/dashboard_pages/hospital_home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:mobi_health/pages/dashboard_pages/home_page.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
@@ -69,13 +71,15 @@ class _DashboardIndexState extends State<DashboardIndex> {
 
   Widget hostpitalDashboard(){
     return Scaffold(
-      bottomNavigationBar: AppButtomNavigation(
+      bottomNavigationBar: HospitalAppButtomNavigation(
         pageController: _pageController,
         selectedIndex: _selectedIndex,
       ),
       body: PageView(
         controller: _pageController,
         children: [
+          HospitalHomePage(pageController: _pageController),
+          const WellnessHub(),
           Consumer<AuthenticationProvider>(
             builder: (context, authProvider, _) {
               return ElevatedButton(onPressed: (authProvider.signOut), child: Text('logout'));
