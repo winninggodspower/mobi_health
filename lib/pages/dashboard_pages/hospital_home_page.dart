@@ -1,4 +1,5 @@
-
+import 'package:mobi_health/pages/dashboard_pages/action_dropDown/export_action_drop_down.dart';
+import 'package:mobi_health/pages/dashboard_pages/chat/chat_page.dart';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:mobi_health/pages/dashboard_pages/components/hospital_dashboard_profile_notification.dart';
@@ -29,7 +30,9 @@ class _HospitalHomePageState extends State<HospitalHomePage> {
     super.initState();
     final authProvider = context.read<AuthenticationProvider>();
     final user = authProvider.user;
-    // fetchData(user!.uid);
+    if(user?.uid != null ){
+      fetchData(user!.uid);
+    }
   }
 
   Future<void> fetchData(hospitalId) async {
@@ -38,6 +41,7 @@ class _HospitalHomePageState extends State<HospitalHomePage> {
           await fetchUsersWhoMessagedSpecificHospital(hospitalId);
       setState(() {
         users = fetchedUsers;
+        print(users);
         isLoading = false;
       });
     } catch (e) {
@@ -57,9 +61,33 @@ class _HospitalHomePageState extends State<HospitalHomePage> {
           child: Column(children: [
             HospitalDashboardProfileNotificationWidget(),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-             
+            isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : hasError
+                ? const Center(child: Text('Error loading users'))
+                : users.isEmpty
+                    ? Center(child: Text('No users found'))
+                    : Expanded(
+                        child: ListView.builder(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          var user = users[index];
+                          return InkWell(
+                            onTap: (){
+                              navigateTo(ChatPage(receiverId: user['userId'], receiverType: 'patient', receiverName:user['name'],));
+                            },
+                            child: Container(
+                              child: ListTile(
+                                title: Text(user['name']),
+                                subtitle: Text('view chat'),
+                              )
+                            )
+                          );
+                        },
+                      ),
+                      )
           ])),
     );
   }
