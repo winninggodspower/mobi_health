@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 Future<List<String>> fetchUserIdsWhoMessagedSpecificHospital(String hospitalId) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -23,16 +24,18 @@ Future<List<Map<String, dynamic>>> fetchUserNames(List<String> userIds) async {
   List<Map<String, dynamic>> userNames = [];
 
   for (String userId in userIds) {
-    DocumentSnapshot userDoc = await firestore.collection('users').doc(userId).get();
+    developer.log(userId);
+    DocumentSnapshot userDoc = await firestore.collection('patient').doc(userId).get();
 
     if (userDoc.exists) {
+      developer.log(userDoc.data().toString());
       userNames.add({
         'userId': userId,
-        'name': userDoc['name'],
+        'name': userDoc['firstName'],
       });
     }
   }
-
+  developer.log(userNames.toString());
   return userNames;
 }
 
