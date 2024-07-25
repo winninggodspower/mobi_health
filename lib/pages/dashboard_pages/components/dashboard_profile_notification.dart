@@ -147,8 +147,6 @@ class DashboardProfileNotificationWidget extends StatelessWidget {
         leading: icon,
         title:  Text(
           text,
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
         ), 
      
         trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 16),

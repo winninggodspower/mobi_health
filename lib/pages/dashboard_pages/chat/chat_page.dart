@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobi_health/pages/dashboard_pages/action_dropDown/export_action_drop_down.dart';
+import 'package:mobi_health/pages/dashboard_pages/chat/report_emergency_popup.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/svg_assets.dart' as svg_assets;
 import 'dart:developer' as developer;
@@ -24,11 +25,19 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   TextEditingController _messageController = TextEditingController();
+  bool showPopup = false;
 
   @override
   void initState() {
     super.initState();
   }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
 
 
   Stream<List<Map<String, dynamic>>> fetchAndCombineMessages(String currentUserId, String receiverId) {
@@ -107,15 +116,40 @@ class _ChatPageState extends State<ChatPage> {
                 )
               ]
             ),
-            // ListView(),
-           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: _buildMessageList(),
-                )
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                textStyle: GoogleFonts.alegreyaSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 52, vertical: 8),
               ),
+              onPressed: (){
+                setState(() {
+                  showPopup = !showPopup;
+                });
+              },
+              child: Text('Report Emergency'),
             ),
+           Expanded(
+             child: Stack(
+               children: [
+                  SingleChildScrollView(
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                       child: _buildMessageList(),
+                     )
+                   ),
+                  if(showPopup)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: ReportEmergencyPopup(),
+                    ),
+               ],
+             ),
+           ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(

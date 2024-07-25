@@ -3,9 +3,7 @@ import 'package:mobi_health/widgets/app_buttons.dart';
 import 'action_dropDown/export_action_drop_down.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 
-
 class EmergencyContact extends StatefulWidget {
-
   const EmergencyContact({super.key});
 
   @override
@@ -16,7 +14,6 @@ class _EmergencyContactState extends State<EmergencyContact> {
   final TextEditingController _phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? emergencyContact;
-
 
   @override
   void initState() {
@@ -41,7 +38,7 @@ class _EmergencyContactState extends State<EmergencyContact> {
     final authProvider = context.watch<AuthenticationProvider>();
     final userInfo = authProvider.userInfo;
 
-   emergencyContact = userInfo?['emergencyContact'];
+    emergencyContact = userInfo?['emergencyContact'];
 
     return Scaffold(
         backgroundColor: AppColors.backgroundColor,
@@ -91,10 +88,12 @@ class _EmergencyContactState extends State<EmergencyContact> {
                               buttonBkColor:
                                   const Color.fromARGB(255, 189, 189, 189),
                               onPres: () {
-                                 if (_formKey.currentState?.validate() ?? false) {
-                                  authProvider.updateEmergencyContact(_phoneController.text.trim(), context);
-                                } 
-                                },
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  authProvider.updateEmergencyContact(
+                                      _phoneController.text.trim(), context);
+                                }
+                              },
                               text: "Update Contact",
                               textColor: AppColors.gray,
                               width: double.infinity,
