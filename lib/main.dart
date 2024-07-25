@@ -17,6 +17,7 @@ import 'package:mobi_health/providers/device_permission_provider.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/register.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/login_page.dart';
 import 'package:mobi_health/pages/authentication/patient_pages/onBoardingSignup.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class GlobalVariable {
@@ -39,6 +40,7 @@ class GlobalVariable {
 }
 
 void main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(

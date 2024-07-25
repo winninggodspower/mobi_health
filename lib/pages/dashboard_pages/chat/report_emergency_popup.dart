@@ -127,7 +127,10 @@ class _ReportEmergencyPopupState extends State<ReportEmergencyPopup> {
 
     TwilioResponse response = await twilioFlutter.sendSMS(
       toNumber : emergencyContact,
-      messageBody : 'hello world'
+      messageBody : '''
+      your buddy is having a health emergency
+      ${authProvider.userInfo?['firstName']} ${authProvider.userInfo?['lastName'] }
+      ''',
     );
 
   }
