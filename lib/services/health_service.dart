@@ -11,25 +11,25 @@ import 'dart:developer' as developer;
     if (data.steps < 3000 || data.steps > 10000) {
       NotificationService.showNotification(
         'Health Alert',
-        'Your step count is outside the normal range.',
+        'Your step count is outside the normal range. ${data.steps} steps',
       );
     }
     if (data.heartRate < 60 || data.heartRate > 100) {
       NotificationService.showNotification(
         'Health Alert',
-        'Your heart rate is outside the normal range.',
+        'Your heart rate is outside the normal range. ${data.heartRate} bpm',
       );
     }
     if (data.bodyTemperature < 35.0 || data.bodyTemperature > 38.0) {
       NotificationService.showNotification(
         'Health Alert',
-        'Your body temperature is outside the normal range.',
+        'Your body temperature is outside the normal range. ${data.bodyTemperature} C',
       );
     }
     if (data.sleepHours < 6.0 || data.sleepHours > 9.0) {
       NotificationService.showNotification(
         'Health Alert',
-        'Your sleep hours are outside the normal range.',
+        'Your sleep hours are outside the normal range. ${data.sleepHours} hours',
       );
     }
     if (data.weight < 50.0 || data.weight > 100.0) {
@@ -45,9 +45,9 @@ HealthData generateMockHealthData() {
   return HealthData(
     date: DateTime.now(),
     steps: 5000 + random.nextInt(5000),
-    heartRate: 60 + random.nextInt(40),
-    bodyTemperature: 36.0 + random.nextDouble() * 2.0,
-    sleepHours: 4.0 + random.nextDouble() * 4.0,
+    heartRate: 40 + random.nextInt(80),
+    bodyTemperature: 30.0 + random.nextDouble() * 10.0,
+    sleepHours: 4.0 + random.nextDouble() * 10.0,
     weight: 60.0 + random.nextDouble() * 40.0,
   );
 }
