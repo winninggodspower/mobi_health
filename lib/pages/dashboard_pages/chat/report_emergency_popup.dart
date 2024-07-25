@@ -140,6 +140,12 @@ class _ReportEmergencyPopupState extends State<ReportEmergencyPopup> {
       ''',
     );
 
+    _emergencyController.clear();
+    ShowSnackBar(context, 'successfully sent emergency message');
+    setState((){
+
+    });
+
   }
 
 }
