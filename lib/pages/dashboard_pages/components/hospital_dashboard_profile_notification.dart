@@ -28,6 +28,7 @@ class HospitalDashboardProfileNotificationWidget extends StatelessWidget {
         GestureDetector(
           key: _key,
           onTap: () {
+            showPopupMenu(context);
           },
           child: Container(
               padding: const EdgeInsets.all(3),
@@ -35,10 +36,8 @@ class HospitalDashboardProfileNotificationWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50),
                 color: imageColor,
               ),
-              child: Image.asset(
-                'assets/profile-pic.png',
-                width: 35,
-              ) //profile image of logged in image,
+              child: 
+              Image.network('https://avatar.iran.liara.run/public/girl', width: 35), //profile image of logged in image,
               ),
         ),
         Badge(
@@ -69,6 +68,72 @@ class HospitalDashboardProfileNotificationWidget extends StatelessWidget {
           color: AppColors.primary_800Color,
           size: 20,
         ),
+      ),
+    );
+  }
+
+  showPopupMenu(BuildContext context) {
+    RenderBox renderBox = _key.currentContext!.findRenderObject() as RenderBox;
+    Offset offset = renderBox.localToGlobal(Offset.zero);
+    double left = offset.dx;
+    double top = offset.dy + renderBox.size.height;
+
+    return showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+          left, top, left + 1, top + 1), // Position of the menu
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(29),
+      ),
+      items: [
+        PopupMenuItem<int>(
+          value: 4,
+          child: optionItem(
+            text: 'Logout',
+            icon: SvgPicture.asset(
+              svg_assets.logoutIcon,
+            ),
+            // iconPath: svg_assets.logoutIcon,
+          ),
+        ),
+      ],
+    ).then((value) {
+      // Handle your logic based on the selected value
+      if (value != null) {
+        print('Selected value: $value');
+        if (value == 4) {
+          context.read<AuthenticationProvider>().signOut();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const OnBoardingSignup()));
+        } else if (value == 0) {
+          navigateTo(const EmergencyContact());
+        } else if (value == 1) {
+          navigateTo(DetailsView());
+        } else if (value == 2) {
+          navigateTo(const UpdatePasswordScreen());
+        } else if (value == 3) {
+          navigateTo(const HelpView());
+        }
+      }
+    });
+  }
+
+  Widget optionItem({
+    required String text,
+    required Widget icon,
+    // required String iconPath,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        leading: icon,
+        title:  Text(
+          text,
+        ), 
+     
+        trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 16),
       ),
     );
   }
