@@ -6,9 +6,11 @@ import 'package:mobi_health/widgets/app_buttons.dart';
 import 'package:mobi_health/providers/authentication_provider.dart';
 import 'package:mobi_health/providers/health_data_provider.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
-import 'package:mobi_health/services/twillio_service.dart';
+// import 'package:mobi_health/services/twillio_service.dart';
 import 'package:mobi_health/util.dart';
 import 'package:http/http.dart' as http;
+import 'package:twilio_flutter/twilio_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ReportEmergencyPopup extends StatefulWidget {
   const ReportEmergencyPopup({super.key});
@@ -86,7 +88,6 @@ class _ReportEmergencyPopupState extends State<ReportEmergencyPopup> {
                 materialButton(
                     buttonBkColor: AppColors.secondaryColor,
                     onPres: () {
-                      print('pelar is the king of tiktok');
                       if(_formKey.currentState?.validate() ?? true){
                         print('valid');
                         _sendEmergencyMessage(_emergencyController.text);
@@ -124,6 +125,12 @@ class _ReportEmergencyPopupState extends State<ReportEmergencyPopup> {
       "emergencyContact": emergencyContact,
       "message": emergencyMessage,
     };
+
+    final TwilioFlutter twilioFlutter = TwilioFlutter(
+        accountSid: dotenv.env['accountSid']!, 
+        authToken: dotenv.env['authToken']!, 
+        twilioNumber: dotenv.env['twilioNumber']!, 
+    );
 
     TwilioResponse response = await twilioFlutter.sendSMS(
       toNumber : emergencyContact,

@@ -40,7 +40,9 @@ class GlobalVariable {
 }
 
 void main() async {
+  // load .env
   await dotenv.load(fileName: ".env");
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
